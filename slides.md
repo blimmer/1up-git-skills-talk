@@ -102,15 +102,15 @@ But, from a high level, we have 3-4 kinds of branches.
 ---
 # Who could forget such classics as...
 ---
-![](/images/commits/record-1.png)
+![](images/commits/record-1.png)
 ---
-![](/images/commits/record-2.png)
+![](images/commits/record-2.png)
 ---
-![](/images/commits/record-3.png)
+![](images/commits/record-3.png)
 ---
 # or my personal favorite...
 ---
-![](/images/commits/record-4.png)
+![](images/commits/record-4.png)
 ---
 Some of these are, of course, shown in jest and the commit messages could be
 improved.
@@ -132,9 +132,9 @@ However, the historical record can be difficult to traverse.
 ---
 # Which gives you commits like these...
 ---
-![](/images/commits/story-1.png)
+![](images/commits/story-1.png)
 ---
-![](/images/commits/story-2.png)
+![](images/commits/story-2.png)
 ---
 # School 0
 # vs.
@@ -254,28 +254,28 @@ git rebase develop
 ---
 This brings you to a screen where you can decide what to do with your commits
 
-![](/images/rebase-tutorial/rebase-1.png)
+![](images/rebase-tutorial/rebase-1.png)
 ---
 ## Squash (allthethings)
 In this example, I want to squash everything down to 1 commit because that's
 the only valuable history on this branch.
 
-![](/images/rebase-tutorial/rebase-2.png)
+![](images/rebase-tutorial/rebase-2.png)
 ---
 ## Reword Commit `r`
 Since I said I wanted to reword the first commit, I'm brought to this screen
 
-![](/images/rebase-tutorial/rebase-3.png)
+![](images/rebase-tutorial/rebase-3.png)
 ---
 ## Complete Rebase
 Now that I've reworded, I'm shown a final summary of happened
 
-![](/images/rebase-tutorial/rebase-4.png)
+![](images/rebase-tutorial/rebase-4.png)
 ---
 ## :tada:
 We're left with one meaningful commit message!
 
-![](/images/rebase-tutorial/rebase-5.png)
+![](images/rebase-tutorial/rebase-5.png)
 ***
 # :flushed:
 ## on interactive rebasing ?
