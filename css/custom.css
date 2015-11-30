@@ -1,0 +1,17 @@
+.reveal blockquote {
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.reveal ul {
+  min-width: 85%;
+  margin-bottom: 20px;
+}
+
+.reveal ol {
+  min-width: 50%;
+}
+
+.reveal pre {
+  font-size: 1em;
+}
