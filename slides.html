@@ -1,0 +1,936 @@
+<section>
+
+<h1>
+<img class="emoji" alt=":raised_hands:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64c.png"> your git skills</h1>
+
+<p>Ben Limmer<br>
+<a href="https://github.com/blimmer" class="user-mention">@blimmer</a></p>
+
+<p>December 2, 2015</p>
+
+</section>
+<section>
+
+<h2>Plumbing vs. Porcelain</h2>
+
+<p>We'll stick mostly to using porcelain commands, but reading the
+<a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">plumbing docs</a>
+is highly recommended.</p>
+
+</section>
+<section>
+
+<h2>Desired Takeaways</h2>
+
+<ul>
+<li>how we "do Git" on the web team</li>
+<li>the two schools of thought on repo history</li>
+<li>how to rebase</li>
+</ul>
+
+</section>
+<section>
+<section>
+
+<h1>How we "do Git" on the web team</h1>
+
+</section>
+<section>
+
+<h2>Git Flow ... kinda</h2>
+
+<p class="fragment">
+Kinda, because most of us don't use the git flow plugin.
+</p>
+
+<p class="fragment">
+But, from a high level, we have 3-4 kinds of branches.
+</p>
+
+</section>
+<section>
+
+<h2>master</h2>
+
+<h3>a.k.a. the "release branch"</h3>
+
+</section>
+<section>
+
+<h2>master rules</h2>
+
+<ul>
+<li>
+<strong>Never</strong> rebased</li>
+<li>Tests always pass</li>
+<li>Tagged with a <a href="https://help.github.com/articles/creating-releases/">GitHub Release</a> when deploying to prod</li>
+<li>Only branched directly for hotfixes</li>
+</ul>
+
+</section>
+<section>
+
+<h2>master benefits</h2>
+
+<ul>
+<li>Allows develop to be in a <strong>semi</strong>-releasable state, with ability to hotfix emergencies</li>
+<li>Tags allow simple history (<a href="https://github.com/skywinder/github-changelog-generator">changelog generator</a>)</li>
+</ul>
+
+</section>
+<section>
+
+<h2>develop</h2>
+
+<h3>a.k.a. the "next release" branch</h3>
+
+</section>
+<section>
+
+<h2>develop rules</h2>
+
+<ul>
+<li>
+<strong>Never</strong> rebased</li>
+<li>Semi-stable</li>
+<li>Tests should pass</li>
+<li>Features/Epics are merged here</li>
+</ul>
+
+</section>
+<section>
+
+<h2>develop benefits</h2>
+
+<ul>
+<li>Allows us to build up the next release without dealing with merge conflicts right before deploy</li>
+<li>Easily aggregate changes before a deploy</li>
+</ul>
+
+</section>
+<section>
+
+<h2>feature branches</h2>
+
+<h3>a.k.a. a "story" branch</h3>
+
+</section>
+<section>
+
+<h2>feature branch rules</h2>
+
+<ul>
+<li>Rebased at will*</li>
+<li>One testable/deployable piece of work</li>
+<li>PR-ed against develop</li>
+</ul>
+
+</section>
+<section>
+
+<h2>feature branch benefits</h2>
+
+<ul>
+<li>Comfortably rebase when you want</li>
+<li>WIP commits OK (will be squashed before merging)</li>
+</ul>
+
+</section>
+<section>
+
+<h2>epic branches</h2>
+
+<h3>a.k.a. a "collection of story branches" that might take more than a sprint to get deployable</h3>
+
+</section>
+<section>
+
+<h2>epic branch rules</h2>
+
+<ul>
+<li>Not rebased (until ready for merge to develop)</li>
+<li>Merged into occasionally from develop (if develop is active)</li>
+<li>Related feature branches are branched from the epic branch</li>
+<li>Simply "another develop", but shorter lived</li>
+</ul>
+
+</section>
+<section>
+
+<h2>epic branch benefits</h2>
+
+<ul>
+<li>Maintains contract of develop being "semi-stable"</li>
+<li>Avoids huge PR reviews at the end of the epic</li>
+<li>Allow story acceptance as you go (against staging)</li>
+</ul>
+
+</section>
+<section>
+
+<h1>Show &amp; Tell</h1>
+
+<ul>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/releases">releases</a></li>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md">changelog</a></li>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/pulls">PRs</a></li>
+<li>
+<a href="https://ibotta.com/deploy-info">deploy-info</a> trick</li>
+</ul>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on how we "do git" ?</h2>
+
+</section>
+<section>
+<section>
+
+<h1>A Tale of Two Histories</h1>
+
+</section>
+<section>
+
+<h2>Two main schools of thought on commit history</h2>
+
+</section>
+<section>
+
+<h2>School 0:</h2>
+
+<h3>"It's a record of what actually happened"</h3>
+
+<blockquote>
+<p>It’s a historical document, valuable in its own right, and shouldn’t be tampered with. From this angle, changing the commit history is almost blasphemous; you’re lying about what actually transpired. So what if there was a messy series of merge commits? That’s how it happened, and the repository should preserve that for posterity.</p>
+</blockquote>
+
+<h5>source: <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">git book</a>
+</h5>
+
+</section>
+<section>
+
+<h1>Who could forget such classics as...</h1>
+
+</section>
+<section>
+
+<p><img src="/images/commits/record-1.png" alt=""></p>
+
+</section>
+<section>
+
+<p><img src="/images/commits/record-2.png" alt=""></p>
+
+</section>
+<section>
+
+<p><img src="/images/commits/record-3.png" alt=""></p>
+
+</section>
+<section>
+
+<h1>or my personal favorite...</h1>
+
+</section>
+<section>
+
+<p><img src="/images/commits/record-4.png" alt=""></p>
+
+</section>
+<section>
+
+<p>Some of these are, of course, shown in jest and the commit messages could be
+improved.</p>
+
+<p class="fragment">
+This really <strong>is</strong> a record of exactly what happened.
+</p>
+
+<p class="fragment">
+However, the historical record can be difficult to traverse.
+</p>
+
+</section>
+<section>
+
+<h2>School 1:</h2>
+
+<h3>"It's the story of how your project was made"</h3>
+
+<blockquote>
+<p>You wouldn’t publish the first draft of a book, and the manual for how to maintain your software deserves careful editing. This is the camp that uses tools like rebase and filter-branch to tell the story in the way that’s best for future readers.</p>
+</blockquote>
+
+<h5>source: <a href="https://git-scm.com/book/en/v2/Git-Branching-Rebasing">git book</a>
+</h5>
+
+</section>
+<section>
+
+<h1>Which gives you commits like these...</h1>
+
+</section>
+<section>
+
+<p><img src="/images/commits/story-1.png" alt=""></p>
+
+</section>
+<section>
+
+<p><img src="/images/commits/story-2.png" alt=""></p>
+
+</section>
+<section>
+
+<h1>School 0</h1>
+
+<h1>vs.</h1>
+
+<h1>School 1</h1>
+
+</section>
+<section>
+
+<h2>School 0</h2>
+
+<h3>"It's a record of what actually happened"</h3>
+
+<h3>Pros</h3>
+
+<ul>
+<li>Easy</li>
+<li>Low-Risk / Barrier to Entry</li>
+<li>History records what "really happened"</li>
+</ul>
+
+<h3>Cons</h3>
+
+<ul>
+<li>Lots of micro-commits, with varying levels of meaning</li>
+<li>More commits === more time spelunking the logs</li>
+</ul>
+
+</section>
+<section>
+
+<h2>School 1</h2>
+
+<h3>"It's the story of how your project was made"</h3>
+
+<h3>Pros</h3>
+
+<ul>
+<li>Clean, meaningful history</li>
+<li>No "WIP", "Initial", etc. commits</li>
+</ul>
+
+<h3>Cons</h3>
+
+<ul>
+<li>More time-consuming</li>
+<li>Must be careful with rewriting history</li>
+<li>Can create very "macro" commits containing a lot of code</li>
+</ul>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on the two schools ?</h2>
+
+</section>
+<section>
+<section>
+
+<p>I, personally, believe in School 1.
+</p>
+<p class="fragment">
+But we need to understand what it means to "rebase" before we go any further.
+</p>
+
+</section>
+<section>
+
+<h2>Merge vs. Rebase</h2>
+
+</section>
+<section>
+
+<h2>Merge</h2>
+
+<p>A merge occurs when you want to integrate two branches together.
+<img src="images/networks/merge-1.png" alt=""></p>
+
+</section>
+<section>
+
+<p>When you merge <code>experiment</code> into <code>master</code>, it performs a three-way merge between
+the two latest branch snapshots (C3 and C4) and the most recent common ancestor
+of the two (C2), creating a new snapshot (and commit).
+<img src="images/networks/merge-2.png" alt=""></p>
+
+</section>
+<section>
+
+<p>This is fine, but we've produced another commit which might not be extremely
+valuable.</p>
+
+</section>
+<section>
+
+<h2>Rebase</h2>
+
+<p>A rebase takes one or more patches and reapplies it on top of new commits on
+the destination branch.
+<img src="images/networks/merge-1.png" alt=""></p>
+
+</section>
+<section>
+
+<p>When you rebase <code>experiment</code> off of <code>master</code>, it works by going to the common
+ancestor of the two branches (C2), generating diffs for each subsequent commit
+(C4), and applies the commit to the new commit on <code>master</code>.
+<img src="images/networks/rebase-1.png" alt=""></p>
+
+</section>
+<section>
+
+<p>Now we can fast-forward merge to <code>master</code>, giving us
+<img src="images/networks/rebase-2.png" alt=""></p>
+
+</section>
+<section>
+
+<p>The result of the merge and the rebase are functionally the same, except the
+rebase history looks more linear.</p>
+
+</section>
+<section>
+
+<p><img src="images/networks/merge-2.png" alt="">
+<img src="images/networks/rebase-2.png" alt=""></p>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on basic rebasing ?</h2>
+
+</section>
+<section>
+<section>
+
+<p>But how does this get rid of "meaningless" commits?
+</p>
+<p class="fragment">
+It doesn't directly, but an interactive rebase does.
+</p>
+
+</section>
+<section>
+
+<h2>Interactive Rebasing</h2>
+
+<p>Allows you to "edit" each commit's contents or message as you re-apply each commit
+on top of the ancestor branch.</p>
+
+</section>
+<section>
+
+<p>While working on a feature branch, you likely have a commit history like this</p>
+
+<p><img src="images/commits/record-5.png" alt=""></p>
+
+</section>
+<section>
+
+<p>However, <strong>very</strong> little actually changed for this feature.</p>
+
+<p><img src="images/commits/record-6.png" alt=""></p>
+
+</section>
+<section>
+
+<p>Imagine bisecting this and finding that this was the offending commit</p>
+
+<p><img src="images/commits/record-7.png" alt=""></p>
+
+</section>
+<section>
+
+<h1><img class="emoji" alt=":rage:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f621.png"></h1>
+
+</section>
+<section>
+
+<p>In the example above, there were two problems (IMO):</p>
+
+<ol>
+<li>There are a lot of commits retaining history that isn't important to maintain
+(e.g. fixing specs and making PR notes)</li>
+<li>The dev originally branched off of develop, but then merged develop back in.
+In total, that means that for this work, there will be two merge commits that
+don't mean a lot.</li>
+</ol>
+
+</section>
+<section>
+
+<p>How do we fix it?</p>
+
+</section>
+<section>
+
+<h2>Interactive Rebase</h2>
+
+<p>Before merging the feature into develop, the dev could have done an interactive
+rebase in order to "squash" commits.</p>
+
+</section>
+<section>
+<pre><code class="nohighlight">git checkout develop
+git pull origin develop
+git checkout feature/x
+git rebase develop
+</code></pre>
+</section>
+<section>
+
+<p>This brings you to a screen where you can decide what to do with your commits</p>
+
+<p><img src="/images/rebase-tutorial/rebase-1.png" alt=""></p>
+
+</section>
+<section>
+
+<h2>Squash (allthethings)</h2>
+
+<p>In this example, I want to squash everything down to 1 commit because that's
+the only valuable history on this branch.</p>
+
+<p><img src="/images/rebase-tutorial/rebase-2.png" alt=""></p>
+
+</section>
+<section>
+
+<h2>Reword Commit <code>r</code>
+</h2>
+
+<p>Since I said I wanted to reword the first commit, I'm brought to this screen</p>
+
+<p><img src="/images/rebase-tutorial/rebase-3.png" alt=""></p>
+
+</section>
+<section>
+
+<h2>Complete Rebase</h2>
+
+<p>Now that I've reworded, I'm shown a final summary of happened</p>
+
+<p><img src="/images/rebase-tutorial/rebase-4.png" alt=""></p>
+
+</section>
+<section>
+
+<h2><img class="emoji" alt=":tada:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png"></h2>
+
+<p>We're left with one meaningful commit message!</p>
+
+<p><img src="/images/rebase-tutorial/rebase-5.png" alt=""></p>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on interactive rebasing ?</h2>
+
+</section>
+<section>
+<section>
+
+<h1><img class="emoji" alt=":ambulance:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f691.png"></h1>
+
+<p>When re-writing history (e.g. rebasing) can go wrong</p>
+
+</section>
+<section>
+
+<h2>Example</h2>
+
+<p>Imagine I'm working on a feature branch and it has 3 commits on origin (meaning
+I've pushed the branch to GitHub).</p>
+
+<table>
+<thead>
+<tr>
+<th>Commit Hash</th>
+<th>Message</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>Initial Implementation</td>
+<td>blimmer</td>
+</tr>
+<tr>
+<td>b</td>
+<td>Test Fixes</td>
+<td>blimmer</td>
+</tr>
+<tr>
+<td>c</td>
+<td>PR Updates</td>
+<td>blimmer</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section>
+
+<p>I decide to rebase those commits into one commit. However, the designer on my
+team has checked out my feature branch, added a commit, and pushed it to origin,
+so the history on origin looks like this.</p>
+
+<table>
+<thead>
+<tr>
+<th>Commit Hash</th>
+<th>Message</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td>Initial Implementation</td>
+<td>blimmer</td>
+</tr>
+<tr>
+<td>b</td>
+<td>Test Fixes</td>
+<td>blimmer</td>
+</tr>
+<tr>
+<td>c</td>
+<td>PR Updates</td>
+<td>blimmer</td>
+</tr>
+<tr>
+<td>d</td>
+<td>Fonts &amp; Colors</td>
+<td>krsmcd</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section>
+
+<p>However, if I don't pull from origin first, do an interactive rebase to squash
+my three commits into one, and force-push to origin, origin will now have this
+history.</p>
+
+<table>
+<thead>
+<tr>
+<th>Commit Hash</th>
+<th>Message</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td>My Squashed Commit</td>
+<td>blimmer</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section>
+
+<p>Doh! I just lost the designer's commit. Let's hope he still has that commit
+locally so we can do some git-fu to get it back.</p>
+
+<p><img class="emoji" alt=":facepunch:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44a.png"></p>
+
+</section>
+<section>
+
+<p>There are two things to take from this accident.</p>
+
+<ol>
+<li>If you know others are (or even might be) working on your branch, don't
+rewrite history until you're ready to merge.</li>
+<li>
+<strong>always</strong> use <code>--force-with-lease</code> to ensure your local remote ref is the
+same as the origin remote ref (e.g. no one else has pushed commits to your branch)</li>
+</ol>
+
+</section>
+<section>
+
+<p>If I would have used</p>
+<pre><code class="nohighlight">git push --force-with-lease
+</code></pre>
+<p>I would have seen this message</p>
+<pre><code class="nohighlight">git push --force-with-lease
+To /tmp/repo
+[rejected]  feature/x -&gt; feature/x (stale info)
+error: failed to push some refs to '/tmp/repo'
+</code></pre>
+<p>That would have told me - oh crap, someone else was working on this branch!</p>
+
+</section>
+<section>
+
+<p>Ok, it sounds scary but it's really not that bad. 9/10 times I'm working on my
+own on a branch. If I'm not, I just wait to do any rebasing until I'm ready to
+merge to develop.</p>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on rebasing safety ?</h2>
+
+</section>
+<section>
+<section>
+
+<p>Now we know how to rebase.
+</p>
+<p class="fragment">
+So, let me show you my process.
+</p>
+
+</section>
+<section>
+
+<ol>
+<li>Branch</li>
+<li>Work normally</li>
+<li>Squash</li>
+<li>Rebase</li>
+<li>Merge</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h2>1. Branch</h2>
+
+<p>I always start off the same way - by creating a branch (either from epic or develop).</p>
+<pre><code class="nohighlight">git checkout -b feature/my-new-feature
+</code></pre>
+</section>
+<section>
+
+<h2>"It's the story of how your project was made"</h2>
+
+<ol>
+<li>
+<del>Branch</del> √</li>
+<li>Work normally</li>
+<li>Squash</li>
+<li>Rebase</li>
+<li>Merge</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h2>2. Work Normally</h2>
+
+<p>WIP commits and all! This branch is yours and you should track work as it makes
+sense. Make as many commits as you want, even if they don't have meaning yet.</p>
+
+</section>
+<section>
+
+<h2>"It's the story of how your project was made"</h2>
+
+<ol>
+<li>
+<del>Branch</del> √</li>
+<li>
+<del>Work normally</del> √</li>
+<li>Squash</li>
+<li>Rebase</li>
+<li>Merge</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h2>3. Squash</h2>
+
+<p class="fragment">
+Squash all meaningless commits. This doesn't mean "every PR must have 1 commit".
+</p>
+
+<p class="fragment">
+It simply means that if the diff stored in history by a commit isn't useful on
+its own, squash it into some other commit that carries meaning. Remember you can
+re-order commits in a rebase!
+</p>
+
+</section>
+<section>
+
+<h2>"It's the story of how your project was made"</h2>
+
+<ol>
+<li>
+<del>Branch</del> √</li>
+<li>
+<del>Work normally</del> √</li>
+<li>
+<del>Squash</del> √</li>
+<li>Rebase</li>
+<li>Merge</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h2>4. Rebase</h2>
+
+<p>Rebase your branch off of the ancestor branch (usually develop), so only
+a fast-forward merge will occur.</p>
+
+</section>
+<section>
+
+<h2>"It's the story of how your project was made"</h2>
+
+<ol>
+<li>
+<del>Branch</del> √</li>
+<li>
+<del>Work normally</del> √</li>
+<li>
+<del>Squash</del> √</li>
+<li>
+<del>Rebase</del> √</li>
+<li>Merge</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h2>5. Merge</h2>
+
+<p>Merge your freshly rebased code into develop or the epic branch.</p>
+
+<p>Via GitHub or the command line.</p>
+<pre><code class="nohighlight">git checkout develop
+git merge feature/my-new-feature
+</code></pre>
+</section>
+<section>
+
+<h2>"It's the story of how your project was made"</h2>
+
+<ol>
+<li>
+<del>Branch</del> √</li>
+<li>
+<del>Work normally</del> √</li>
+<li>
+<del>Squash</del> √</li>
+<li>
+<del>Rebase</del> √</li>
+<li>
+<del>Merge</del> √</li>
+<li>Repeat <img class="emoji" alt=":beers:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37b.png">
+</li>
+</ol>
+
+</section>
+<section>
+
+<h1><img class="emoji" alt=":tada:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png"></h1>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on the method I use ?</h2>
+
+</section>
+<section>
+
+<h1><img class="emoji" alt=":question:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2753.png"></h1>
+
+<h2>on anything else</h2>
+
+</section>
+<section>
+
+<h2>Resources</h2>
+
+<ul>
+<li><a href="https://git-scm.com/book/en/v2">git book</a></li>
+<li><a href="http://rypress.com/tutorials/git/plumbing">rypress git plumbing</a></li>
+</ul>
+<pre><code class="nohighlight">git help &lt;command-name&gt;
+</code></pre>
+</section>
+<section>
+
+<h2>Thanks!</h2>
+
+<p><img class="emoji" alt=":bow:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f647.png"></p>
+
+<p>Ben Limmer<br>
+<a href="https://github.com/blimmer" class="user-mention">@blimmer</a><br>
+hello@benlimmer.com  </p>
+
+</section>
+<section>
+
+<h2>Legal Stuff</h2>
+
+<p>I was heavily influenced by the <a href="https://git-scm.com/book/en/v2">Git Book</a>,
+which is licensed under the
+<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution Non Commercial Share Alike 3.0 license</a>, thus this presentation
+is also subject to the same license.</p>
+
+<p>Don't freak out - that just means that you need to attribute it if you use it,
+indicate if changes were made and distribute any remix of this work under the
+same license.</p>
+
+<p>I reused some of the awesome diagrams and have made minor changes to the
+description of how rebases are applied.</p>
+
+</section>
