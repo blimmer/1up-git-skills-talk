@@ -13,81 +13,11 @@ is highly recommended.
 ---
 ## Desired Takeaways
 
-- how we "do Git" on the web team
 - the two schools of thought on repo history
 - how to rebase
-***
-# How we "do Git" on the web team
----
-## Git Flow ... kinda
-
-<p class='fragment'>
-Kinda, because most of us don't use the git flow plugin.
-</p>
-<p class='fragment'>
-But, from a high level, we have 3-4 kinds of branches.
-</p>
----
-## master
-### a.k.a. the "release branch"
----
-## master rules
-- **Never** rebased
-- Tests always pass
-- Tagged with a [GitHub Release](https://help.github.com/articles/creating-releases/) when deploying to prod
-- Only branched directly for hotfixes
----
-## master benefits
-- Allows develop to be in a **semi**-releasable state, with ability to hotfix emergencies
-- Tags allow simple history ([changelog generator](https://github.com/skywinder/github-changelog-generator))
----
-## develop
-### a.k.a. the "next release" branch
----
-## develop rules
-- **Never** rebased
-- Semi-stable
-- Tests should pass
-- Features/Epics are merged here
----
-## develop benefits
-- Allows us to build up the next release without dealing with merge conflicts right before deploy
-- Easily aggregate changes before a deploy
----
-## feature branches
-### a.k.a. a "story" branch
----
-## feature branch rules
-- Rebased at will*
-- One testable/deployable piece of work
-- PR-ed against develop
----
-## feature branch benefits
-- Comfortably rebase when you want
-- WIP commits OK (will be squashed before merging)
----
-## epic branches
-### a.k.a. a "collection of story branches" that might take more than a sprint to get deployable
----
-## epic branch rules
-- Not rebased (until ready for merge to develop)
-- Merged into occasionally from develop (if develop is active)
-- Related feature branches are branched from the epic branch
-- Simply "another develop", but shorter lived
----
-## epic branch benefits
-- Maintains contract of develop being "semi-stable"
-- Avoids huge PR reviews at the end of the epic
-- Allow story acceptance as you go (against staging)
----
-# Show & Tell
-* [releases](https://github.com/Ibotta/Ibotta-Web/releases)
-* [changelog](https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md)
-* [PRs](https://github.com/Ibotta/Ibotta-Web/pulls)
-* [deploy-info](https://ibotta.com/deploy-info) trick
-***
-# :flushed:
-## on how we "do git" ?
+- how we "do Git" on the web team
+- my suggested workflow
+- a new trick
 ***
 # A Tale of Two Histories
 ---
@@ -348,11 +278,81 @@ merge to develop.
 # :flushed:
 ## on rebasing safety ?
 ***
-Now we know how to rebase.
+# How we "do Git" on the web team
+---
+## Git Flow ... kinda
+
 <p class='fragment'>
-So, let me show you my process.
+Kinda, because most of us don't use the git flow plugin.
+</p>
+<p class='fragment'>
+But, from a high level, we have 3-4 kinds of branches.
 </p>
 ---
+## master
+### a.k.a. the "release branch"
+---
+## master rules
+- **Never** rebased
+- Tests always pass
+- Tagged with a [GitHub Release](https://help.github.com/articles/creating-releases/) when deploying to prod
+- Only branched directly for hotfixes
+---
+## master benefits
+- Allows develop to be in a **semi**-releasable state, with ability to hotfix emergencies
+- Tags allow simple history ([changelog generator](https://github.com/skywinder/github-changelog-generator))
+---
+## develop
+### a.k.a. the "next release" branch
+---
+## develop rules
+- **Never** rebased
+- Semi-stable
+- Tests should pass
+- Features/Epics are merged here
+---
+## develop benefits
+- Allows us to build up the next release without dealing with merge conflicts right before deploy
+- Easily aggregate changes before a deploy
+---
+## feature branches
+### a.k.a. a "story" branch
+---
+## feature branch rules
+- Rebased at will*
+- One testable/deployable piece of work
+- PR-ed against develop
+---
+## feature branch benefits
+- Comfortably rebase when you want
+- WIP commits OK (will be squashed before merging)
+---
+## epic branches
+### a.k.a. a "collection of story branches" that might take more than a sprint to get deployable
+---
+## epic branch rules
+- Not rebased (until ready for merge to develop)
+- Merged into occasionally from develop (if develop is active)
+- Related feature branches are branched from the epic branch
+- Simply "another develop", but shorter lived
+---
+## epic branch benefits
+- Maintains contract of develop being "semi-stable"
+- Avoids huge PR reviews at the end of the epic
+- Allow story acceptance as you go (against staging)
+---
+# Show & Tell
+* [releases](https://github.com/Ibotta/Ibotta-Web/releases)
+* [changelog](https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md)
+* [PRs](https://github.com/Ibotta/Ibotta-Web/pulls)
+* [deploy-info](https://ibotta.com/deploy-info) trick
+***
+# :flushed:
+## on how we "do git" ?
+***
+Let me show you my process.
+---
+## blimmer's process
 1. Branch
 2. Work normally
 3. Squash
@@ -368,7 +368,7 @@ I always start off the same way - by creating a branch (either from epic or deve
 git checkout -b feature/my-new-feature
 ```
 ---
-## "It's the story of how your project was made"
+## blimmer's process
 1. ~~Branch~~ √
 2. Work normally
 3. Squash
@@ -382,7 +382,7 @@ WIP commits and all! This branch is yours and you should track work as it makes
 sense. Make as many commits as you want, even if they don't have meaning yet.
 
 ---
-## "It's the story of how your project was made"
+## blimmer's process
 1. ~~Branch~~ √
 2. ~~Work normally~~ √
 3. Squash
@@ -402,7 +402,7 @@ its own, squash it into some other commit that carries meaning. Remember you can
 re-order commits in a rebase!
 </p>
 ---
-## "It's the story of how your project was made"
+## blimmer's process
 1. ~~Branch~~ √
 2. ~~Work normally~~ √
 3. ~~Squash~~ √
@@ -416,7 +416,7 @@ Rebase your branch off of the ancestor branch (usually develop), so only
 a fast-forward merge will occur.
 
 ---
-## "It's the story of how your project was made"
+## blimmer's process
 1. ~~Branch~~ √
 2. ~~Work normally~~ √
 3. ~~Squash~~ √
@@ -435,7 +435,7 @@ git merge feature/my-new-feature
 ```
 
 ---
-## "It's the story of how your project was made"
+## blimmer's process
 1. ~~Branch~~ √
 2. ~~Work normally~~ √
 3. ~~Squash~~ √
