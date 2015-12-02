@@ -475,6 +475,7 @@ Commit Hash | Message | Author
 f           | My Squashed Commit | blimmer
 ... make some changes ...
 ---
+
 ```nohighlight
 git add .
 git commit --amend
@@ -483,7 +484,91 @@ git commit --amend
 Commit Hash | Message | Author
 ------------|---------|--------
 e           | My Squashed Commit | blimmer
+
 ***
+***
+## adding by patch
+
+```nohighlight
+git add -p
+```
+---
+
+another tool to use instead of
+
+```nohighlight
+git add .
+```
+---
+
+steps through each file patch by patch, staging as you go.
+
+<p class='fragment'>
+Imagine a change at the top and bottom of a file, but they're not related to the
+same change.
+</p>
+
+---
+
+```nohighlight
+blimmer:~/code/talks/git (master ✗)
+› git add -p
+```
+
+---
+
+```nohighlight
+› git add -p
+diff --git a/README.md b/README.md
+index 1a9c834..d25f0d6 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+ # 1-Up Your Git Skills
+
++A change at the top
++
+ A talk given at the Ibotta Engineering Lunch and Learn series on December 2, 2015.
+ This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
+
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]?
+```
+
+---
+
+```nohighlight
+@@ -16,3 +18,5 @@ If you want to run this project locally:
+ 3. Run `reveal-ck generate`
+ 4. Run `reveal-ck serve`
+ 5. Visit http://localhost:10000
++
++A change at the bottom
+```
+
+---
+
+```nohighlight
+blimmer:~/code/talks/git (master ✗)
+› st
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	modified:   README.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   README.md
+```
+***
+# extra credit :100:
+<p class='fragment'>
+Demo time
+</p>
+---
 # :question:
 ## on anything else
 ---
