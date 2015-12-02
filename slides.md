@@ -564,11 +564,24 @@ Changes not staged for commit:
 	modified:   README.md
 ```
 ***
+***
 # extra credit :100:
 <p class='fragment'>
 Demo time
 </p>
 ---
+ok, that took some time...
+
+<p class='fragment'>
+but what history would you rather view if you need to go back through it?
+</p>
+---
+## original
+![](images/rebase-tutorial/rebase-6.png)
+---
+### rebase
+![](images/rebase-tutorial/rebase-7.png)
+***
 # :question:
 ## on anything else
 ---
