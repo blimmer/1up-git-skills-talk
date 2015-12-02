@@ -448,6 +448,42 @@ git merge feature/my-new-feature
 # :flushed:
 ## on the method I use ?
 ---
+# other git tricks
+***
+## amending the last commit
+```nohighlight
+git commit --amend
+```
+---
+`git commit --amend`
+
+> It's the little brother of an interactive rebase
+
+#### @onyxraven
+---
+`git commit --amend`
+
+Takes any staged changes and rolls it into the previous commit. Great for
+"PR Notes" commits.
+
+<p class='fragment'>
+This <strong>still rewrites history</strong>.
+</p>
+---
+Commit Hash | Message | Author
+------------|---------|--------
+f           | My Squashed Commit | blimmer
+... make some changes ...
+---
+```nohighlight
+git add .
+git commit --amend
+```
+
+Commit Hash | Message | Author
+------------|---------|--------
+e           | My Squashed Commit | blimmer
+***
 # :question:
 ## on anything else
 ---
