@@ -179,7 +179,7 @@ rebase in order to "squash" commits.
 git checkout develop
 git pull origin develop
 git checkout feature/x
-git rebase develop
+git rebase -i develop
 ```
 ---
 This brings you to a screen where you can decide what to do with your commits
