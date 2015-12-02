@@ -23,168 +23,12 @@ is highly recommended.</p>
 <h2>Desired Takeaways</h2>
 
 <ul>
-<li>how we "do Git" on the web team</li>
 <li>the two schools of thought on repo history</li>
 <li>how to rebase</li>
+<li>how we "do Git" on the web team</li>
+<li>my suggested workflow</li>
+<li>a new trick</li>
 </ul>
-
-</section>
-<section>
-<section>
-
-<h1>How we "do Git" on the web team</h1>
-
-</section>
-<section>
-
-<h2>Git Flow ... kinda</h2>
-
-<p class="fragment">
-Kinda, because most of us don't use the git flow plugin.
-</p>
-
-<p class="fragment">
-But, from a high level, we have 3-4 kinds of branches.
-</p>
-
-</section>
-<section>
-
-<h2>master</h2>
-
-<h3>a.k.a. the "release branch"</h3>
-
-</section>
-<section>
-
-<h2>master rules</h2>
-
-<ul>
-<li>
-<strong>Never</strong> rebased</li>
-<li>Tests always pass</li>
-<li>Tagged with a <a href="https://help.github.com/articles/creating-releases/">GitHub Release</a> when deploying to prod</li>
-<li>Only branched directly for hotfixes</li>
-</ul>
-
-</section>
-<section>
-
-<h2>master benefits</h2>
-
-<ul>
-<li>Allows develop to be in a <strong>semi</strong>-releasable state, with ability to hotfix emergencies</li>
-<li>Tags allow simple history (<a href="https://github.com/skywinder/github-changelog-generator">changelog generator</a>)</li>
-</ul>
-
-</section>
-<section>
-
-<h2>develop</h2>
-
-<h3>a.k.a. the "next release" branch</h3>
-
-</section>
-<section>
-
-<h2>develop rules</h2>
-
-<ul>
-<li>
-<strong>Never</strong> rebased</li>
-<li>Semi-stable</li>
-<li>Tests should pass</li>
-<li>Features/Epics are merged here</li>
-</ul>
-
-</section>
-<section>
-
-<h2>develop benefits</h2>
-
-<ul>
-<li>Allows us to build up the next release without dealing with merge conflicts right before deploy</li>
-<li>Easily aggregate changes before a deploy</li>
-</ul>
-
-</section>
-<section>
-
-<h2>feature branches</h2>
-
-<h3>a.k.a. a "story" branch</h3>
-
-</section>
-<section>
-
-<h2>feature branch rules</h2>
-
-<ul>
-<li>Rebased at will*</li>
-<li>One testable/deployable piece of work</li>
-<li>PR-ed against develop</li>
-</ul>
-
-</section>
-<section>
-
-<h2>feature branch benefits</h2>
-
-<ul>
-<li>Comfortably rebase when you want</li>
-<li>WIP commits OK (will be squashed before merging)</li>
-</ul>
-
-</section>
-<section>
-
-<h2>epic branches</h2>
-
-<h3>a.k.a. a "collection of story branches" that might take more than a sprint to get deployable</h3>
-
-</section>
-<section>
-
-<h2>epic branch rules</h2>
-
-<ul>
-<li>Not rebased (until ready for merge to develop)</li>
-<li>Merged into occasionally from develop (if develop is active)</li>
-<li>Related feature branches are branched from the epic branch</li>
-<li>Simply "another develop", but shorter lived</li>
-</ul>
-
-</section>
-<section>
-
-<h2>epic branch benefits</h2>
-
-<ul>
-<li>Maintains contract of develop being "semi-stable"</li>
-<li>Avoids huge PR reviews at the end of the epic</li>
-<li>Allow story acceptance as you go (against staging)</li>
-</ul>
-
-</section>
-<section>
-
-<h1>Show &amp; Tell</h1>
-
-<ul>
-<li><a href="https://github.com/Ibotta/Ibotta-Web/releases">releases</a></li>
-<li><a href="https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md">changelog</a></li>
-<li><a href="https://github.com/Ibotta/Ibotta-Web/pulls">PRs</a></li>
-<li>
-<a href="https://ibotta.com/deploy-info">deploy-info</a> trick</li>
-</ul>
-
-</section>
-</section>
-<section>
-
-<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
-
-<h2>on how we "do git" ?</h2>
 
 </section>
 <section>
@@ -219,17 +63,17 @@ But, from a high level, we have 3-4 kinds of branches.
 </section>
 <section>
 
-<p><img src="/images/commits/record-1.png" alt=""></p>
+<p><img src="images/commits/record-1.png" alt=""></p>
 
 </section>
 <section>
 
-<p><img src="/images/commits/record-2.png" alt=""></p>
+<p><img src="images/commits/record-2.png" alt=""></p>
 
 </section>
 <section>
 
-<p><img src="/images/commits/record-3.png" alt=""></p>
+<p><img src="images/commits/record-3.png" alt=""></p>
 
 </section>
 <section>
@@ -239,7 +83,7 @@ But, from a high level, we have 3-4 kinds of branches.
 </section>
 <section>
 
-<p><img src="/images/commits/record-4.png" alt=""></p>
+<p><img src="images/commits/record-4.png" alt=""></p>
 
 </section>
 <section>
@@ -277,12 +121,12 @@ However, the historical record can be difficult to traverse.
 </section>
 <section>
 
-<p><img src="/images/commits/story-1.png" alt=""></p>
+<p><img src="images/commits/story-1.png" alt=""></p>
 
 </section>
 <section>
 
-<p><img src="/images/commits/story-2.png" alt=""></p>
+<p><img src="images/commits/story-2.png" alt=""></p>
 
 </section>
 <section>
@@ -507,7 +351,7 @@ git rebase develop
 
 <p>This brings you to a screen where you can decide what to do with your commits</p>
 
-<p><img src="/images/rebase-tutorial/rebase-1.png" alt=""></p>
+<p><img src="images/rebase-tutorial/rebase-1.png" alt=""></p>
 
 </section>
 <section>
@@ -517,7 +361,7 @@ git rebase develop
 <p>In this example, I want to squash everything down to 1 commit because that's
 the only valuable history on this branch.</p>
 
-<p><img src="/images/rebase-tutorial/rebase-2.png" alt=""></p>
+<p><img src="images/rebase-tutorial/rebase-2.png" alt=""></p>
 
 </section>
 <section>
@@ -527,7 +371,7 @@ the only valuable history on this branch.</p>
 
 <p>Since I said I wanted to reword the first commit, I'm brought to this screen</p>
 
-<p><img src="/images/rebase-tutorial/rebase-3.png" alt=""></p>
+<p><img src="images/rebase-tutorial/rebase-3.png" alt=""></p>
 
 </section>
 <section>
@@ -536,7 +380,7 @@ the only valuable history on this branch.</p>
 
 <p>Now that I've reworded, I'm shown a final summary of happened</p>
 
-<p><img src="/images/rebase-tutorial/rebase-4.png" alt=""></p>
+<p><img src="images/rebase-tutorial/rebase-4.png" alt=""></p>
 
 </section>
 <section>
@@ -545,7 +389,7 @@ the only valuable history on this branch.</p>
 
 <p>We're left with one meaningful commit message!</p>
 
-<p><img src="/images/rebase-tutorial/rebase-5.png" alt=""></p>
+<p><img src="images/rebase-tutorial/rebase-5.png" alt=""></p>
 
 </section>
 </section>
@@ -715,14 +559,170 @@ merge to develop.</p>
 <section>
 <section>
 
-<p>Now we know how to rebase.
-</p>
+<h1>How we "do Git" on the web team</h1>
+
+</section>
+<section>
+
+<h2>Git Flow ... kinda</h2>
+
 <p class="fragment">
-So, let me show you my process.
+Kinda, because most of us don't use the git flow plugin.
+</p>
+
+<p class="fragment">
+But, from a high level, we have 3-4 kinds of branches.
 </p>
 
 </section>
 <section>
+
+<h2>master</h2>
+
+<h3>a.k.a. the "release branch"</h3>
+
+</section>
+<section>
+
+<h2>master rules</h2>
+
+<ul>
+<li>
+<strong>Never</strong> rebased</li>
+<li>Tests always pass</li>
+<li>Tagged with a <a href="https://help.github.com/articles/creating-releases/">GitHub Release</a> when deploying to prod</li>
+<li>Only branched directly for hotfixes</li>
+</ul>
+
+</section>
+<section>
+
+<h2>master benefits</h2>
+
+<ul>
+<li>Allows develop to be in a <strong>semi</strong>-releasable state, with ability to hotfix emergencies</li>
+<li>Tags allow simple history (<a href="https://github.com/skywinder/github-changelog-generator">changelog generator</a>)</li>
+</ul>
+
+</section>
+<section>
+
+<h2>develop</h2>
+
+<h3>a.k.a. the "next release" branch</h3>
+
+</section>
+<section>
+
+<h2>develop rules</h2>
+
+<ul>
+<li>
+<strong>Never</strong> rebased</li>
+<li>Semi-stable</li>
+<li>Tests should pass</li>
+<li>Features/Epics are merged here</li>
+</ul>
+
+</section>
+<section>
+
+<h2>develop benefits</h2>
+
+<ul>
+<li>Allows us to build up the next release without dealing with merge conflicts right before deploy</li>
+<li>Easily aggregate changes before a deploy</li>
+</ul>
+
+</section>
+<section>
+
+<h2>feature branches</h2>
+
+<h3>a.k.a. a "story" branch</h3>
+
+</section>
+<section>
+
+<h2>feature branch rules</h2>
+
+<ul>
+<li>Rebased at will*</li>
+<li>One testable/deployable piece of work</li>
+<li>PR-ed against develop</li>
+</ul>
+
+</section>
+<section>
+
+<h2>feature branch benefits</h2>
+
+<ul>
+<li>Comfortably rebase when you want</li>
+<li>WIP commits OK (will be squashed before merging)</li>
+</ul>
+
+</section>
+<section>
+
+<h2>epic branches</h2>
+
+<h3>a.k.a. a "collection of story branches" that might take more than a sprint to get deployable</h3>
+
+</section>
+<section>
+
+<h2>epic branch rules</h2>
+
+<ul>
+<li>Not rebased (until ready for merge to develop)</li>
+<li>Merged into occasionally from develop (if develop is active)</li>
+<li>Related feature branches are branched from the epic branch</li>
+<li>Simply "another develop", but shorter lived</li>
+</ul>
+
+</section>
+<section>
+
+<h2>epic branch benefits</h2>
+
+<ul>
+<li>Maintains contract of develop being "semi-stable"</li>
+<li>Avoids huge PR reviews at the end of the epic</li>
+<li>Allow story acceptance as you go (against staging)</li>
+</ul>
+
+</section>
+<section>
+
+<h1>Show &amp; Tell</h1>
+
+<ul>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/releases">releases</a></li>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md">changelog</a></li>
+<li><a href="https://github.com/Ibotta/Ibotta-Web/pulls">PRs</a></li>
+<li>
+<a href="https://ibotta.com/deploy-info">deploy-info</a> trick</li>
+</ul>
+
+</section>
+</section>
+<section>
+
+<h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
+
+<h2>on how we "do git" ?</h2>
+
+</section>
+<section>
+<section>
+
+<p>Let me show you my process.</p>
+
+</section>
+<section>
+
+<h2>blimmer's process</h2>
 
 <ol>
 <li>Branch</li>
@@ -745,7 +745,7 @@ So, let me show you my process.
 </section>
 <section>
 
-<h2>"It's the story of how your project was made"</h2>
+<h2>blimmer's process</h2>
 
 <ol>
 <li>
@@ -769,7 +769,7 @@ sense. Make as many commits as you want, even if they don't have meaning yet.</p
 </section>
 <section>
 
-<h2>"It's the story of how your project was made"</h2>
+<h2>blimmer's process</h2>
 
 <ol>
 <li>
@@ -801,7 +801,7 @@ re-order commits in a rebase!
 </section>
 <section>
 
-<h2>"It's the story of how your project was made"</h2>
+<h2>blimmer's process</h2>
 
 <ol>
 <li>
@@ -827,7 +827,7 @@ a fast-forward merge will occur.</p>
 </section>
 <section>
 
-<h2>"It's the story of how your project was made"</h2>
+<h2>blimmer's process</h2>
 
 <ol>
 <li>
@@ -857,7 +857,7 @@ git merge feature/my-new-feature
 </section>
 <section>
 
-<h2>"It's the story of how your project was made"</h2>
+<h2>blimmer's process</h2>
 
 <ol>
 <li>
@@ -886,6 +886,169 @@ git merge feature/my-new-feature
 <h1><img class="emoji" alt=":flushed:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f633.png"></h1>
 
 <h2>on the method I use ?</h2>
+
+</section>
+<section>
+
+<h1>other git tricks</h1>
+
+</section>
+<section>
+<section>
+
+<h2>amending the last commit</h2>
+<pre><code class="nohighlight">git commit --amend
+</code></pre>
+</section>
+<section>
+
+<p><code>git commit --amend</code></p>
+
+<blockquote>
+<p>It's the little brother of an interactive rebase</p>
+</blockquote>
+
+<h4><a href="https://github.com/onyxraven" class="user-mention">@onyxraven</a></h4>
+
+</section>
+<section>
+
+<p><code>git commit --amend</code></p>
+
+<p>Takes any staged changes and rolls it into the previous commit. Great for
+"PR Notes" commits.</p>
+
+<p class="fragment">
+This <strong>still rewrites history</strong>.
+</p>
+
+</section>
+<section>
+
+<table>
+<thead>
+<tr>
+<th>Commit Hash</th>
+<th>Message</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td>My Squashed Commit</td>
+<td>blimmer</td>
+</tr>
+</tbody>
+</table>
+
+<p>... make some changes ...</p>
+
+</section>
+<section>
+<pre><code class="nohighlight">git add .
+git commit --amend
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Commit Hash</th>
+<th>Message</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e</td>
+<td>My Squashed Commit</td>
+<td>blimmer</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+
+<section>
+<section>
+
+<h2>adding by patch</h2>
+<pre><code class="nohighlight">git add -p
+</code></pre>
+</section>
+<section>
+
+<p>another tool to use instead of</p>
+<pre><code class="nohighlight">git add .
+</code></pre>
+</section>
+<section>
+
+<p>steps through each file patch by patch, staging as you go.</p>
+
+<p class="fragment">
+Imagine a change at the top and bottom of a file, but they're not related to the
+same change.
+</p>
+
+</section>
+<section>
+<pre><code class="nohighlight">blimmer:~/code/talks/git (master ✗)
+› git add -p
+</code></pre>
+</section>
+<section>
+<pre><code class="nohighlight">› git add -p
+diff --git a/README.md b/README.md
+index 1a9c834..d25f0d6 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+ # 1-Up Your Git Skills
+
++A change at the top
++
+ A talk given at the Ibotta Engineering Lunch and Learn series on December 2, 2015.
+ This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
+
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]?
+</code></pre>
+</section>
+<section>
+<pre><code class="nohighlight">@@ -16,3 +18,5 @@ If you want to run this project locally:
+ 3. Run `reveal-ck generate`
+ 4. Run `reveal-ck serve`
+ 5. Visit http://localhost:10000
++
++A change at the bottom
+</code></pre>
+</section>
+<section>
+<pre><code class="nohighlight">blimmer:~/code/talks/git (master ✗)
+› st
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+    modified:   README.md
+
+Changes not staged for commit:
+  (use "git add &lt;file&gt;..." to update what will be committed)
+  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+
+    modified:   README.md
+</code></pre>
+</section>
+</section>
+<section>
+
+<h1>extra credit <img class="emoji" alt=":100:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4af.png">
+</h1>
+
+<p class="fragment">
+Demo time
+</p>
 
 </section>
 <section>
