@@ -12,7 +12,7 @@ Found a problem in the slides? Please open a PR or issue!
 If you want to run this project locally:
 
 1. Clone the repo
-2. Install the [reveal-ck gem](https://rubygems.org/gems/reveal-ck)
+2. `bundle install`
 3. Run `reveal-ck generate`
 4. Run `reveal-ck serve`
 5. Visit http://localhost:10000
