@@ -107,7 +107,7 @@ However, the historical record can be difficult to traverse.
 ***
 ***
 
-## Merge
+## Create a Merge Commit
 
 ![](images/github/pr_option-merge.png)
 
@@ -130,29 +130,70 @@ Additionally, we have feature branch commits intermixed within the history of <c
 # :raising_hand:
 ## on merging ?
 ***
-## Rebase
+## Rebase and Merge
 
 ![](images/github/pr_option-rebase-merge.png)
 ---
-A rebase takes one or more patches and reapplies it on top of new commits on the destination branch.
+A rebase takes one or more commits and reapplies it on top of new commits on the destination branch.
 ![](images/networks/merge-1.png)
 ---
-When you rebase `experiment` off of `master`, it works by going to the common
-ancestor of the two branches (C2), generating diffs for each subsequent commit
-(C4), and applies the commit to the new commit on `master`.
+When you rebase `feature/add-behavior` off of `develop`, it works by going to the common ancestor of the two branches (C1), generating diffs for each subsequent commit (C2/C3/C5), and replays each commit.
 ![](images/networks/rebase-1.png)
 ---
-Now we can fast-forward merge to `master`, giving us
+Then, the merge can occur as a "fast-forward" merge, creating no merge commit.
 ![](images/networks/rebase-2.png)
 ---
-The result of the merge and the rebase are functionally the same, except the
-rebase history looks more linear.
+The result of the merge and the rebase are functionally the same, except the rebase history looks more linear.
 ---
+## Create a Merge Commit
 ![](images/networks/merge-2.png)
+---
+## Rebase and Merge
 ![](images/networks/rebase-2.png)
 ***
-# :flushed:
-## on basic rebasing ?
+# :raising_hand:
+## on rebase and merge ?
+***
+
+## Squash and Merge
+![](images/github/pr_option-squash-merge.png)
+
+---
+
+A "squash" takes one or more commits, creates a single commit from those commits and applies it to the destination branch.
+
+![](images/networks/merge-1.png)
+
+---
+When you squash `feature/add-behavior`, it conceptually rebases the branch as before.
+
+![](images/networks/rebase-1.png)
+
+But then, it "squashes" the commits (C6/C7/C8) into one commit.
+---
+All the commits from the branch are now contained in one commit (C9).
+![](images/networks/squash-1.png)
+---
+Then, the merge can occur as a "fast-forward" merge, creating no merge commit.
+![](images/networks/squash-2.png)
+
+<p class='fragment'>
+Just like a rebase and merge.
+</p>
+
+***
+# :raising_hand:
+## on squash and merge ?
+***
+## Create a Merge Commit
+![](images/networks/merge-2.png)
+---
+## Rebase and Merge
+![](images/networks/rebase-2.png)
+---
+## Squash and Merge
+![](images/networks/squash-2.png)
+
 ***
 But how does this get rid of "meaningless" commits?
 <p class='fragment'>
