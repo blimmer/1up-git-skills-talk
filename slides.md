@@ -16,87 +16,6 @@ We'll stick mostly to using porcelain commands, but reading the [plumbing docs](
 - learn a trick or two
 
 ***
-# A Tale of Two Histories
-
----
-
-## Two main schools of thought on commit history
-
----
-
-## School 0:
-### "It's a record of what actually happened"
-
->It’s a historical document, valuable in its own right, and shouldn’t be tampered with. From this angle, changing the commit history is almost blasphemous; you’re lying about what actually transpired. So what if there was a messy series of merge commits? That’s how it happened, and the repository should preserve that for posterity.
-
-##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
----
-# Who could forget such classics as...
----
-![](images/commits/record-1.png)
----
-![](images/commits/record-2.png)
----
-![](images/commits/record-3.png)
----
-# or my personal favorite...
----
-![](images/commits/record-4.png)
----
-Some of these are, of course, shown in jest and the commit messages could be improved.
-
-<p class='fragment'>
-This really <strong>is</strong> a record of exactly what happened.
-</p>
-
-<p class='fragment'>
-However, the historical record can be difficult to traverse.
-</p>
----
-## School 1:
-### "It's the story of how your project was made"
-
->You wouldn’t publish the first draft of a book, and the manual for how to maintain your software deserves careful editing. This is the camp that uses tools like rebase and filter-branch to tell the story in the way that’s best for future readers.
-
-##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
----
-# Which gives you commits like these...
----
-![](images/commits/story-1.png)
----
-![](images/commits/story-2.png)
----
-# School 0
-# vs.
-# School 1
----
-## School 0
-### "It's a record of what actually happened"
-
-### Pros
-* Easy
-* Low-Risk / Barrier to Entry
-* History records what "really happened"
-
-### Cons
-* Lots of micro-commits, with varying levels of meaning
-* More commits === more time spelunking the logs
----
-## School 1
-### "It's the story of how your project was made"
-
-### Pros
-* Clean, meaningful history
-* No "WIP", "Initial", etc. commits
-
-### Cons
-* Must be careful with rewriting history
-* Can create very "macro" commits containing a lot of code
-
-***
-# :raising_hand:
-## on the two schools ?
-***
 
 ### The Three Github PR Options
 
@@ -195,39 +114,177 @@ Just like a rebase and merge.
 ![](images/networks/squash-2.png)
 
 ***
-But how does this get rid of "meaningless" commits?
+***
+# A Tale of Two Histories
+
+---
+
+## Two main schools of thought on commit history
+
+---
+
+## School 0:
+### "It's a record of what actually happened"
+
+>It’s a historical document, valuable in its own right, and shouldn’t be tampered with. From this angle, changing the commit history is almost blasphemous; you’re lying about what actually transpired. So what if there was a messy series of merge commits? That’s how it happened, and the repository should preserve that for posterity.
+
+##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+---
+# Who could forget such classics as...
+---
+![](images/commits/record-1.png)
+---
+![](images/commits/record-2.png)
+---
+![](images/commits/record-3.png)
+---
+# or my personal favorite...
+---
+![](images/commits/record-4.png)
+---
+Some of these are, of course, shown in jest and the commit messages could be improved.
+
 <p class='fragment'>
-It doesn't directly, but an interactive rebase does.
+This really <strong>is</strong> a record of exactly what happened.
+</p>
+
+<p class='fragment'>
+However, the historical record can be difficult to traverse.
 </p>
 ---
-## Interactive Rebasing
-Allows you to "edit" each commit's contents or message as you re-apply each commit
-on top of the ancestor branch.
----
-While working on a feature branch, you likely have a commit history like this
+## School 1:
+### "It's the story of how your project was made"
 
-![](images/commits/record-5.png)
----
-However, **very** little actually changed for this feature.
+>You wouldn’t publish the first draft of a book, and the manual for how to maintain your software deserves careful editing. This is the camp that uses tools like rebase and filter-branch to tell the story in the way that’s best for future readers.
 
-![](images/commits/record-6.png)
+##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
 ---
-Imagine bisecting this and finding that this was the offending commit
+# Which gives you commits like these...
+---
+![](images/commits/story-1.png)
+---
+![](images/commits/story-2.png)
+---
+# School 0
+# vs.
+# School 1
+---
+## School 0
+### "It's a record of what actually happened"
 
-![](images/commits/record-7.png)
----
-# :rage:
----
-In the example above, there were two problems (IMO):
+### Pros
+* Easy
+* Low-Risk / Barrier to Entry
+* History records what "really happened"
 
-1. There are a lot of commits retaining history that isn't important to maintain
-(e.g. fixing specs and making PR notes)
-2. The dev originally branched off of develop, but then merged develop back in.
-In total, that means that for this work, there will be two merge commits that
-don't mean a lot.
+### Cons
+* Lots of micro-commits, with varying levels of meaning
+* More commits === more time traversing the logs
 ---
-How do we fix it?
+## School 1
+### "It's the story of how your project was made"
+
+### Pros
+* Clean, meaningful history
+* No "WIP", "Initial", etc. commits
+
+### Cons
+* Must be careful with rewriting history
+* Can create very "macro" commits containing a lot of code
+
+***
+# :raising_hand:
+## on the two schools ?
+***
+## Patterns at Ibotta
+
+We enforce "squash and merge" on most repositories.
+
 ---
+
+It produces history like this:
+
+![](images/commits/repo-history-1.png)
+
+---
+
+![](images/commits/repo-history-2.png)
+
+---
+
+![](images/commits/pr-page.png)
+
+---
+
+A developer that finds this commit years down the road would have lots of context and information on why we changed the code in this way.
+
+***
+***
+
+# Gotchas with Squash & Merge
+
+---
+
+Remember our squash and merge from before?
+
+![](images/networks/merge-1.png)
+
+---
+
+![](images/networks/squash-1.png)
+
+---
+
+![](images/networks/squash-2.png)
+
+---
+
+What would happen if someone branched off of our branch before we squashed and merged?
+
+<p class='fragment'>
+Their branch would still know about commits C2/C3/C5, but those commits don't exist anymore...
+</p>
+
+---
+
+Charlie's branch has commits C2/C3/C5 from when he originally branched from Bob's branch.
+
+![](images/networks/squash-gotcha-1.png)
+
+---
+
+When Bob merges, he creates C9 and "rewrites history" so that C2/C3/C5 don't end up on develop. But Charlie's branch still knows about Bob's original commits.
+
+![](images/networks/squash-gotcha-2.png)
+
+---
+
+To fix this, we need to help `git` understand what's going on.
+
+```nohighlight
+git rebase --onto develop feature/add-behavior feature/add-more-behavior
+```
+
+or replay the last two commits only (ours):
+
+```nohighlight
+git rebase --onto develop HEAD~2
+```
+
+---
+
+This will result in a nice clean graph:
+
+![](images/networks/squash-gotcha-3.png)
+
+***
+
+:raising_hand:
+on gotchas?
+
+***
+
+
 ## Interactive Rebase
 Before merging the feature into develop, the dev could have done an interactive
 rebase in order to "squash" commits.
