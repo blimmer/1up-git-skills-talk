@@ -3,26 +3,36 @@
 Ben Limmer  
 @blimmer
 
-December 2, 2015
+August 28, 2017
 ---
 ## Plumbing vs. Porcelain
 
-We'll stick mostly to using porcelain commands, but reading the
-[plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)
-is highly recommended.
+We'll stick mostly to using porcelain commands, but reading the [plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) is highly recommended once you're familiar with these concepts.
 ---
 ## Desired Takeaways
 
-- the two schools of thought on repo history
-- how to rebase
-- how we "do Git" on the web team
-- my suggested workflow
-- a new trick
+- understand the three github merge options
+- feel confident with day-to-day git process
+- learn a trick or two
+
+---
+
+### The Three Github PR Options
+
+![](images/github/github_merge_options.png)
+
+##### source: [github help docs](https://help.github.com/assets/images/help/pull_requests/select-squash-and-merge-from-drop-down-menu.png)
+
 ***
+
 # A Tale of Two Histories
+
 ---
+
 ## Two main schools of thought on commit history
+
 ---
+
 ## School 0:
 ### "It's a record of what actually happened"
 
@@ -42,8 +52,7 @@ is highly recommended.
 ---
 ![](images/commits/record-4.png)
 ---
-Some of these are, of course, shown in jest and the commit messages could be
-improved.
+Some of these are, of course, shown in jest and the commit messages could be improved.
 
 <p class='fragment'>
 This really <strong>is</strong> a record of exactly what happened.
@@ -90,18 +99,12 @@ However, the historical record can be difficult to traverse.
 * No "WIP", "Initial", etc. commits
 
 ### Cons
-* More time-consuming
 * Must be careful with rewriting history
 * Can create very "macro" commits containing a lot of code
 ***
-# :flushed:
+# :see_no_evil:
 ## on the two schools ?
 ***
-I, personally, believe in School 1.
-<p class='fragment'>
-But we need to understand what it means to "rebase" before we go any further.
-</p>
----
 ## Merge vs. Rebase
 ---
 ## Merge
