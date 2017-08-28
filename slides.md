@@ -277,251 +277,73 @@ This will result in a nice clean graph:
 
 ![](images/networks/squash-gotcha-3.png)
 
+---
+
+However, when you try to push, git might tell you that you can't...
+
+```nohighlight
+> git push origin feature/add-more-behavior
+To github.com:blimmer/example-repo.git
+ ! [rejected]        add-more-behavior -> add-more-behavior (non-fast-forward)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+---
+
+git is warning us that history has changed in a way that it doesn't understand. it's suggesting a `git pull`, but that's not what we want to do (that will re-integrate C2/C3/C5 from origin!)
+
+---
+
+we need to tell git that we know what we're doing and that we just rebased.
+
+```nohighlight
+> git push --force-with-lease origin feature/add-more-behavior
+```
+
+<p class='fragment'>
+<code>origin</code> will now happily accept our newly rebased version of our branch.
+</p>
+---
+
+:confused:
+`--force-with-lease` ???
+
+---
+
+## `--force-with-lease`
+
+Checks to make sure that no-one pushed an additional commit to your branch before you rebased.
+
+---
+
+TLDR; use `--force-with-lease` and if you get a warning that looks like this:
+
+```nohighlight
+> git push --force-with-lease origin feature/add-more-behavior
+[rejected]  add-more-behavior -> add-more-behavior (stale info)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+```
+
+Check out who else is working on your branch.
+
 ***
 
 :raising_hand:
 on gotchas?
 
 ***
-# :ambulance:
-When re-writing history (e.g. rebasing) can go wrong
----
-## Example
-Imagine I'm working on a feature branch and it has 3 commits on origin (meaning
-I've pushed the branch to GitHub).
 
-Commit Hash | Message | Author
-------------|---------|--------
-a           | Initial Implementation | blimmer
-b           | Test Fixes | blimmer
-c           | PR Updates | blimmer
----
-I decide to rebase those commits into one commit. However, the designer on my
-team has checked out my feature branch, added a commit, and pushed it to origin,
-so the history on origin looks like this.
+# Other git tricks
+- git add by patch
+- git bisect
+- git revert
+- git pull --rebase
+- git commit --amend
 
-Commit Hash | Message | Author
-------------|---------|--------
-a           | Initial Implementation | blimmer
-b           | Test Fixes | blimmer
-c           | PR Updates | blimmer
-d           | Fonts & Colors | krsmcd
----
-However, if I don't pull from origin first, do an interactive rebase to squash
-my three commits into one, and force-push to origin, origin will now have this
-history.
-
-Commit Hash | Message | Author
-------------|---------|--------
-f           | My Squashed Commit | blimmer
----
-Doh! I just lost the designer's commit. Let's hope he still has that commit
-locally so we can do some git-fu to get it back.
-
-:facepunch:
----
-There are two things to take from this accident.
-
-1. If you know others are (or even might be) working on your branch, don't
-rewrite history until you're ready to merge.
-2. **always** use `--force-with-lease` to ensure your local remote ref is the
-same as the origin remote ref (e.g. no one else has pushed commits to your branch)
----
-If I would have used
-
-```nohighlight
-git push --force-with-lease
-```
-
-I would have seen this message
-
-```nohighlight
-git push --force-with-lease
-To /tmp/repo
-[rejected]  feature/x -> feature/x (stale info)
-error: failed to push some refs to '/tmp/repo'
-```
-
-That would have told me - oh crap, someone else was working on this branch!
----
-Ok, it sounds scary but it's really not that bad. 9/10 times I'm working on my
-own on a branch. If I'm not, I just wait to do any rebasing until I'm ready to
-merge to develop.
-***
-# :flushed:
-## on rebasing safety ?
-***
-# How we "do Git" on the web team
----
-## Git Flow ... kinda
-
-<p class='fragment'>
-Kinda, because most of us don't use the git flow plugin.
-</p>
-<p class='fragment'>
-But, from a high level, we have 3-4 kinds of branches.
-</p>
----
-## master
-### a.k.a. the "release branch"
----
-## master rules
-- **Never** rebased
-- Tests always pass
-- Tagged with a [GitHub Release](https://help.github.com/articles/creating-releases/) when deploying to prod
-- Only branched directly for hotfixes
----
-## master benefits
-- Allows develop to be in a **semi**-releasable state, with ability to hotfix emergencies
-- Tags allow simple history ([changelog generator](https://github.com/skywinder/github-changelog-generator))
----
-## develop
-### a.k.a. the "next release" branch
----
-## develop rules
-- **Never** rebased
-- Semi-stable
-- Tests should pass
-- Features/Epics are merged here
----
-## develop benefits
-- Allows us to build up the next release without dealing with merge conflicts right before deploy
-- Easily aggregate changes before a deploy
----
-## feature branches
-### a.k.a. a "story" branch
----
-## feature branch rules
-- Rebased at will*
-- One testable/deployable piece of work
-- PR-ed against develop
----
-## feature branch benefits
-- Comfortably rebase when you want
-- WIP commits OK (will be squashed before merging)
----
-## epic branches
-### a.k.a. a "collection of story branches" that might take more than a sprint to get deployable
----
-## epic branch rules
-- Not rebased (until ready for merge to develop)
-- Merged into occasionally from develop (if develop is active)
-- Related feature branches are branched from the epic branch
-- Simply "another develop", but shorter lived
----
-## epic branch benefits
-- Maintains contract of develop being "semi-stable"
-- Avoids huge PR reviews at the end of the epic
-- Allow story acceptance as you go (against staging)
----
-# Show & Tell
-* [releases](https://github.com/Ibotta/Ibotta-Web/releases)
-* [changelog](https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md)
-* [PRs](https://github.com/Ibotta/Ibotta-Web/pulls)
-* [deploy-info](https://ibotta.com/deploy-info) trick
-***
-# :flushed:
-## on how we "do git" ?
-***
-Let me show you my process.
----
-## blimmer's process
-1. Branch
-2. Work normally
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 1. Branch
-
-I always start off the same way - by creating a branch (either from epic or develop).
-
-```nohighlight
-git checkout -b feature/my-new-feature
-```
----
-## blimmer's process
-1. ~~Branch~~ √
-2. Work normally
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 2. Work Normally
-
-WIP commits and all! This branch is yours and you should track work as it makes
-sense. Make as many commits as you want, even if they don't have meaning yet.
-
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 3. Squash
-
-<p class='fragment'>
-Squash all meaningless commits. This doesn't mean "every PR must have 1 commit".
-</p>
-
-<p class='fragment'>
-It simply means that if the diff stored in history by a commit isn't useful on
-its own, squash it into some other commit that carries meaning. Remember you can
-re-order commits in a rebase!
-</p>
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 4. Rebase
-
-Rebase your branch off of the ancestor branch (usually develop), so only
-a fast-forward merge will occur.
-
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. ~~Rebase~~ √
-5. Merge
-6. Repeat :beers:
----
-## 5. Merge
-Merge your freshly rebased code into develop or the epic branch.
-
-Via GitHub or the command line.
-
-```nohighlight
-git checkout develop
-git merge feature/my-new-feature
-```
-
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. ~~Rebase~~ √
-5. ~~Merge~~ √
-6. Repeat :beers:
----
-# :tada:
-***
-# :flushed:
-## on the method I use ?
----
-# other git tricks
 ***
 ## amending the last commit
 ```nohighlight
