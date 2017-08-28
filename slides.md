@@ -15,16 +15,7 @@ We'll stick mostly to using porcelain commands, but reading the [plumbing docs](
 - feel confident with day-to-day git process
 - learn a trick or two
 
----
-
-### The Three Github PR Options
-
-![](images/github/github_merge_options.png)
-
-##### source: [github help docs](https://help.github.com/assets/images/help/pull_requests/select-squash-and-merge-from-drop-down-menu.png)
-
 ***
-
 # A Tale of Two Histories
 
 ---
@@ -101,27 +92,49 @@ However, the historical record can be difficult to traverse.
 ### Cons
 * Must be careful with rewriting history
 * Can create very "macro" commits containing a lot of code
+
 ***
-# :see_no_evil:
+# :raising_hand:
 ## on the two schools ?
 ***
-## Merge vs. Rebase
+
+### The Three Github PR Options
+
+![](images/github/github_merge_options.png)
+
+##### source: [github help docs](https://help.github.com/assets/images/help/pull_requests/select-squash-and-merge-from-drop-down-menu.png)
+
+***
+***
+
+## Merge
+
+![](images/github/pr_option-merge.png)
+
 ---
 ## Merge
 A merge occurs when you want to integrate two branches together.
 ![](images/networks/merge-1.png)
 ---
-When you merge `experiment` into `master`, it performs a three-way merge between
-the two latest branch snapshots (C3 and C4) and the most recent common ancestor
-of the two (C2), creating a new snapshot (and commit).
+When you merge `feature/add-behavior` into `develop`, it performs a three-way merge between the two latest branch snapshots (C4 and C5) and the most recent common ancestor of the two (C1), creating a new snapshot (and commit - C6).
+![](images/networks/merge-1.png)
+---
+This is fine, but we've produced another commit which might not have value.
+
+<p class='fragment'>
+Additionally, we have feature branch commits intermixed within the history of <code>develop</code>.
+</p>
+---
 ![](images/networks/merge-2.png)
----
-This is fine, but we've produced another commit which might not be extremely
-valuable.
----
+***
+# :raising_hand:
+## on merging ?
+***
 ## Rebase
-A rebase takes one or more patches and reapplies it on top of new commits on
-the destination branch.
+
+![](images/github/pr_option-rebase-merge.png)
+---
+A rebase takes one or more patches and reapplies it on top of new commits on the destination branch.
 ![](images/networks/merge-1.png)
 ---
 When you rebase `experiment` off of `master`, it works by going to the common
