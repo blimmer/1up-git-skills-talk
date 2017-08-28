@@ -283,47 +283,6 @@ This will result in a nice clean graph:
 on gotchas?
 
 ***
-
-
-## Interactive Rebase
-Before merging the feature into develop, the dev could have done an interactive
-rebase in order to "squash" commits.
----
-```nohighlight
-git checkout develop
-git pull origin develop
-git checkout feature/x
-git rebase -i develop
-```
----
-This brings you to a screen where you can decide what to do with your commits
-
-![](images/rebase-tutorial/rebase-1.png)
----
-## Squash (allthethings)
-In this example, I want to squash everything down to 1 commit because that's
-the only valuable history on this branch.
-
-![](images/rebase-tutorial/rebase-2.png)
----
-## Reword Commit `r`
-Since I said I wanted to reword the first commit, I'm brought to this screen
-
-![](images/rebase-tutorial/rebase-3.png)
----
-## Complete Rebase
-Now that I've reworded, I'm shown a final summary of happened
-
-![](images/rebase-tutorial/rebase-4.png)
----
-## :tada:
-We're left with one meaningful commit message!
-
-![](images/rebase-tutorial/rebase-5.png)
-***
-# :flushed:
-## on interactive rebasing ?
-***
 # :ambulance:
 When re-writing history (e.g. rebasing) can go wrong
 ---
@@ -678,23 +637,6 @@ Changes not staged for commit:
 	modified:   README.md
 ```
 ***
-***
-# extra credit :100:
-<p class='fragment'>
-Demo time
-</p>
----
-ok, that took some time...
-
-<p class='fragment'>
-but what history would you rather view if you need to go back through it?
-</p>
----
-## original
-![](images/rebase-tutorial/rebase-6.png)
----
-### rebase
-![](images/rebase-tutorial/rebase-7.png)
 ***
 # :question:
 ## on anything else
