@@ -5,15 +5,17 @@ Ben Limmer
 
 August 28, 2017
 ---
+## Desired Takeaways
+
+- understand the two main schools of thought on commit history
+- understand the three github PR merge options
+- understand common gotchas with rewriting history
+- master a new `git` command or two
+
+---
 ## Plumbing vs. Porcelain
 
 We'll stick mostly to using porcelain commands, but reading the [plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) is highly recommended once you're familiar with these concepts.
----
-## Desired Takeaways
-
-- understand the three github merge options
-- feel confident with day-to-day git process
-- learn a trick or two
 
 ***
 
@@ -33,7 +35,7 @@ We'll stick mostly to using porcelain commands, but reading the [plumbing docs](
 ---
 ## Merge
 A merge occurs when you want to integrate two branches together.
-![](images/networks/merge-1.png)
+![](images/networks/example-network.png)
 ---
 When you merge `feature/add-behavior` into `develop`, it performs a three-way merge between the two latest branch snapshots (C4 and C5) and the most recent common ancestor of the two (C1), creating a new snapshot (and commit - C6).
 ![](images/networks/merge-1.png)
@@ -50,11 +52,10 @@ Additionally, we have feature branch commits intermixed within the history of <c
 ## on merging ?
 ***
 ## Rebase and Merge
-
 ![](images/github/pr_option-rebase-merge.png)
 ---
 A rebase takes one or more commits and reapplies it on top of new commits on the destination branch.
-![](images/networks/merge-1.png)
+![](images/networks/example-network.png)
 ---
 When you rebase `feature/add-behavior` off of `develop`, it works by going to the common ancestor of the two branches (C1), generating diffs for each subsequent commit (C2/C3/C5), and replays each commit.
 ![](images/networks/rebase-1.png)
@@ -81,14 +82,16 @@ The result of the merge and the rebase are functionally the same, except the reb
 
 A "squash" takes one or more commits, creates a single commit from those commits and applies it to the destination branch.
 
-![](images/networks/merge-1.png)
+![](images/networks/example-network.png)
 
 ---
 When you squash `feature/add-behavior`, it conceptually rebases the branch as before.
 
 ![](images/networks/rebase-1.png)
 
+<p class='fragment'>
 But then, it "squashes" the commits (C6/C7/C8) into one commit.
+</p>
 ---
 All the commits from the branch are now contained in one commit (C9).
 ![](images/networks/squash-1.png)
@@ -232,10 +235,16 @@ It produces history like this:
 
 A developer that finds this commit years down the road would have lots of context and information on why we changed the code in this way.
 
+---
+
+The individual commits are still also viewable within the PR, and the branch can be restored in its original state, if needed.
+
+![](images/commits/pr-page-commits.png)
+
 ***
 ***
 
-# Gotchas with Squash & Merge
+# Gotchas with Rewriting History
 
 ---
 
@@ -344,6 +353,20 @@ error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
 
 Check out who else is working on your branch.
 
+---
+
+Also, an alias is really handy here. Add this to `~/.gitconfig`.
+
+```nohighlight
+[alias]
+        pushf = push --force-with-lease
+```
+
+Then you can do this instead
+
+```nohighlight
+git pushf origin feature/add-more-behavior
+```
 ***
 
 :raising_hand:
@@ -372,8 +395,7 @@ steps through each file patch by patch, staging as you go.
 
 ---
 
-Imagine a change at the top and bottom of a file, but they're not related to the
-same change.
+Imagine a change at the top and bottom of a file, but they're not related to the same change.
 
 ```nohighlight
 diff --git a/README.md b/README.md
@@ -500,7 +522,7 @@ Steps:
 
 ---
 
-```
+```nohighlight
 > cat test.txt
 row
 row
