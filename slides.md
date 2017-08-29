@@ -100,6 +100,20 @@ Then, the merge can occur as a "fast-forward" merge, creating no merge commit.
 Just like a rebase and merge.
 </p>
 
+---
+
+You should also update the commit messages as you squash and merge.
+
+By default it is just a "starred" list of all your commit messages:
+
+![](images/github/squash-interface-1.png)
+
+---
+
+Take the few extra minutes to add some thought about what the code does. It may prove helpful to a future dev who finds your code.
+
+![](images/github/squash-interface-2.png)
+
 ***
 # :raising_hand:
 ## on squash and merge ?
@@ -682,7 +696,8 @@ Date:   Mon Aug 28 18:00:31 2017 -0600
 ```nohighlight
 git help <command-name>
 ```
----
+
+***
 ## Thanks!
 :bow:
 
