@@ -9,6 +9,9 @@ You can view the slides [here](https://blimmer.github.io/1up-git-skills-talk).
 This is a revamped version of a talk I gave in 2015. If you want to view that
 talk, please check out the [v1 branch](https://github.com/blimmer/1up-git-skills-talk/tree/v1).
 
+The first version walks through a lot more of the specifics of local rebasing and squashing.
+If you don't use GitHub, or want to dive deeper on how to squash / rebase locally, check it out.
+
 ## Contributing
 Found a problem in the slides? Please open a PR or issue!
 
