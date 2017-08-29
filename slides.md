@@ -372,7 +372,83 @@ git pushf origin feature/add-more-behavior
 ***
 
 :raising_hand:
-on gotchas?
+on rewriting history gotchas?
+
+***
+
+# PSA
+## you (almost) never need to merge the same branch into itself
+
+---
+
+commit history on the develop branch
+
+![](images/commits/merge-branch-into-itself-1.png)
+
+---
+
+:confused:
+what happened?
+
+---
+
+![](images/commits/merge-branch-into-itself-2.png)
+
+---
+
+![](images/commits/merge-branch-into-itself-3.png)
+
+---
+
+![](images/commits/merge-branch-into-itself-4.png)
+
+---
+
+```nohighlight
+> git push origin develop
+To github.com:blimmer/example-repo.git
+ ! [rejected]        develop -> develop (non-fast-forward)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+---
+
+we **never** want to force push develop like with our other branches.
+
+<p class='fragment'>
+we want to integrate the missed commit and replay our commit.
+</p>
+
+---
+
+```nohighlight
+git pull origin develop --rebase
+```
+
+<p class='fragment'>
+this will replay our commit after the missed upstream commit
+</p>
+
+---
+
+![](images/commits/merge-branch-into-itself-5.png)
+
+---
+
+now git will happily accept the branch without any force push because the histories match upstream and locally.
+
+```nohighlight
+git push origin develop
+```
+
+***
+
+:raising_hand:
+on why you *almost* never need to merge your own branch into itself?
 
 ***
 
