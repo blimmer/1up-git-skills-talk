@@ -338,55 +338,13 @@ on gotchas?
 ***
 
 # Other git tricks
-- git add by patch
-- git bisect
-- git revert
-- git pull --rebase
-- git commit --amend
-
-***
-## amending the last commit
-```nohighlight
-git commit --amend
-```
----
-`git commit --amend`
-
-> It's the little brother of an interactive rebase
-
-#### @onyxraven
----
-`git commit --amend`
-
-Takes any staged changes and rolls it into the previous commit. Great for
-"PR Notes" commits.
-
-<p class='fragment'>
-This <strong>still rewrites history</strong>.
-</p>
----
-Commit Hash | Message | Author
-------------|---------|--------
-f           | My Squashed Commit | blimmer
-... make some changes ...
----
-
-```nohighlight
-git add .
-git commit --amend
-```
-
-Commit Hash | Message | Author
-------------|---------|--------
-e           | My Squashed Commit | blimmer
+- `git add -p`
+- `git revert`
+- `git bisect`
 
 ***
 ***
-## adding by patch
-
-```nohighlight
-git add -p
-```
+# `git add -p`
 ---
 
 another tool to use instead of
@@ -398,55 +356,61 @@ git add .
 
 steps through each file patch by patch, staging as you go.
 
-<p class='fragment'>
+---
+
 Imagine a change at the top and bottom of a file, but they're not related to the
 same change.
-</p>
-
----
 
 ```nohighlight
-blimmer:~/code/talks/git (master ✗)
-› git add -p
-```
-
----
-
-```nohighlight
-› git add -p
 diff --git a/README.md b/README.md
-index 1a9c834..d25f0d6 100644
+index 8cb1ada..81f96b0 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,5 +1,7 @@
  # 1-Up Your Git Skills
 
-+A change at the top
++A change up top.
 +
- A talk given at the Ibotta Engineering Lunch and Learn series on December 2, 2015.
+ A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
  This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
 
-Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]?
-```
-
----
-
-```nohighlight
 @@ -16,3 +18,5 @@ If you want to run this project locally:
- 3. Run `reveal-ck generate`
- 4. Run `reveal-ck serve`
+ 3. Run `bundle exec reveal-ck generate`
+ 4. Run `bundle exec reveal-ck serve`
  5. Visit http://localhost:10000
 +
-+A change at the bottom
++A change at the bottom.
 ```
 
 ---
 
 ```nohighlight
-blimmer:~/code/talks/git (master ✗)
-› st
-On branch master
-Your branch is up-to-date with 'origin/master'.
+diff --git a/README.md b/README.md
+index 8cb1ada..81f96b0 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+# 1-Up Your Git Skills
+
++A change up top.
++
+A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
+This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
+
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? n
+@@ -16,3 +18,5 @@ If you want to run this project locally:
+3. Run `bundle exec reveal-ck generate`
+4. Run `bundle exec reveal-ck serve`
+5. Visit http://localhost:10000
++
++A change at the bottom.
+Stage this hunk [y,n,q,a,d,/,K,g,e,?]? y
+```
+
+---
+
+```nohighlight
+On branch update-talk
 Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
@@ -458,6 +422,254 @@ Changes not staged for commit:
 
 	modified:   README.md
 ```
+***
+***
+
+# `git revert`
+
+---
+
+with squash and merge this is easy!
+
+![](images/commits/revert-1.png)
+
+---
+
+```nohighlight
+git revert 1e736b8
+git push origin develop
+```
+
+---
+
+![](images/commits/revert-2.png)
+
+---
+
+then, checkout a new branch, revert the revert and fix it up.
+
+![](images/commits/revert-2.png)
+
+```nohighlight
+git checkout -b feature/revert-revert-filtering-rps
+git revert 43baa57
+```
+
+***
+***
+
+# `git bisect`
+
+---
+
+## `git bisect`
+
+> use binary search to find the commit that introduced a bug
+
+---
+
+![](images/bisect/binary-search.gif)
+
+---
+
+Steps:
+1. Tell `git` that we want to bisect.
+1. Mark a `good` commit (where the problem doesn't exist).
+1. Mark a `bad` commit (where the problem does exist).
+1. Find where the bug was introduced.
+
+---
+
+## `git bisect` example
+
+##### [source](https://www.metaltoad.com/blog/beginners-guide-git-bisect-process-elimination)
+
+---
+
+```
+> cat test.txt
+row
+row
+row
+your
+car
+gently
+down
+the
+stream
+```
+
+---
+
+# :expressionless:
+
+---
+
+```nohighlight
+> git log
+commit d6c3e9b9cc226db47b96c926e35c3ca8733a618b (HEAD -> master)
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'stream'
+
+commit 06ecaeb65e34c2a1999e0df388d6740d827700cd
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'the'
+
+commit 8483a605ca3a0ee2114217d85bfd350dbe32c6c4
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'down'
+
+commit a01f608a342d01f6e0f190575e505119de23b64d
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Changing the word 'boat' to 'car'
+
+commit 025c6896d02fbad81ad7425542ec58e762a84d79
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'gently'
+
+commit cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'boat'
+
+commit 155b346e7765aa052ac93667090f7bbb59f8ce52
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'your'
+
+commit 4b240a2c69b96b3e13dcd86ad3dd147111cbc20c
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding third row
+
+commit 4460700b737a791b6d5f83ec1a58fc8442cb397a
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding second row
+
+commit e5d679e901d5de14dff803c7d51fb39fc569d0f4
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding first row
+```
+
+---
+
+# :expressionless:
+
+---
+
+## `git bisect` to the rescue!
+
+first, tell `git` that we want to bisect.
+
+```nohighlight
+git bisect start
+```
+
+---
+
+mark the commit where we knew things were OK.
+
+```nohighlight
+commit cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'boat'
+```
+
+```nohighlight
+git bisect good cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+```
+---
+
+and mark where we know it's bad.
+
+```nohighlight
+commit d6c3e9b9cc226db47b96c926e35c3ca8733a618b (HEAD -> master)
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'stream'
+```
+
+```nohighlight
+git bisect bad d6c3e9b9cc226db47b96c926e35c3ca8733a618b
+```
+
+---
+
+now step through and check it out at each step in the binary search.
+
+```nohighlight
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[a01f608a342d01f6e0f190575e505119de23b64d] Changing the word 'boat' to 'car'
+```
+
+```nohighlight
+> cat test.txt
+row
+row
+row
+your
+car
+gently
+```
+
+```nohighlight
+git bisect bad
+```
+---
+
+```nohighlight
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[025c6896d02fbad81ad7425542ec58e762a84d79] Adding the word 'gently'
+```
+
+```nohighlight
+> cat test.txt
+row
+row
+row
+your
+boat
+gently
+```
+
+```nohighlight
+git bisect good
+```
+
+---
+
+```nohighlight
+a01f608a342d01f6e0f190575e505119de23b64d is the first bad commit
+commit a01f608a342d01f6e0f190575e505119de23b64d
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Changing the word 'boat' to 'car'
+
+:100644 100644 9eb95934daee636eba60587a2aef592cd5edacc1 34802b80cf929a42035c7b02dae715c864e9caa8 M	test.txt
+:000000 100644 0000000000000000000000000000000000000000 9eb95934daee636eba60587a2aef592cd5edacc1 A	test.txt-e
+```
+
 ***
 ***
 # :question:
@@ -479,14 +691,9 @@ Ben Limmer
 hello@benlimmer.com  
 ---
 ## Legal Stuff
-I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2),
-which is licensed under the
-[Creative Commons Attribution Non Commercial Share Alike 3.0 license](http://creativecommons.org/licenses/by-nc-sa/3.0/), thus this presentation
-is also subject to the same license.
+I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2), which is licensed under the
+[Creative Commons Attribution Non Commercial Share Alike 3.0 license](http://creativecommons.org/licenses/by-nc-sa/3.0/), thus this presentation is also subject to the same license.
 
-Don't freak out - that just means that you need to attribute it if you use it,
-indicate if changes were made and distribute any remix of this work under the
-same license.
+You need to attribute it if you use it, indicate if changes were made and distribute any remix of this work under the same license.
 
-I reused some of the awesome diagrams and have made minor changes to the
-description of how rebases are applied.
+I cribbed the "two schools of thought" from that book and added my opinions.
