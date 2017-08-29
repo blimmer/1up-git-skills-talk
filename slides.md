@@ -18,6 +18,87 @@ August 28, 2017
 We'll stick mostly to using porcelain commands, but reading the [plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) is highly recommended once you're familiar with these concepts.
 
 ***
+# A Tale of Two Histories
+
+---
+
+## Two main schools of thought on commit history
+
+---
+
+## School 0:
+### "It's a record of what actually happened"
+
+>It’s a historical document, valuable in its own right, and shouldn’t be tampered with. From this angle, changing the commit history is almost blasphemous; you’re lying about what actually transpired. So what if there was a messy series of merge commits? That’s how it happened, and the repository should preserve that for posterity.
+
+##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+---
+# Who could forget such classics as...
+---
+![](images/commits/record-1.png)
+---
+![](images/commits/record-2.png)
+---
+![](images/commits/record-3.png)
+---
+# or my personal favorite...
+---
+![](images/commits/record-4.png)
+---
+Some of these are, of course, shown in jest and the commit messages could be improved.
+
+<p class='fragment'>
+This really <strong>is</strong> a record of exactly what happened.
+</p>
+
+<p class='fragment'>
+However, the historical record can be difficult to traverse.
+</p>
+---
+## School 1:
+### "It's the story of how your project was made"
+
+>You wouldn’t publish the first draft of a book, and the manual for how to maintain your software deserves careful editing. This is the camp that uses tools like rebase and filter-branch to tell the story in the way that’s best for future readers.
+
+##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
+---
+# Which gives you commits like these...
+---
+![](images/commits/story-1.png)
+---
+![](images/commits/story-2.png)
+---
+# School 0
+# vs.
+# School 1
+---
+## School 0
+### "It's a record of what actually happened"
+
+### Pros
+* Easy
+* Low-Risk / Barrier to Entry
+* History records what "really happened"
+
+### Cons
+* Lots of micro-commits, with varying levels of meaning
+* More commits === more time traversing the logs
+---
+## School 1
+### "It's the story of how your project was made"
+
+### Pros
+* Clean, meaningful history
+* No "WIP", "Initial", etc. commits
+
+### Cons
+* Must be careful with rewriting history
+* Can create very "macro" commits containing a lot of code
+
+***
+# :raising_hand:
+## on the two schools ?
+***
 
 ### The Three Github PR Options
 
@@ -131,87 +212,6 @@ Take the few extra minutes to add some thought about what the code does. It may 
 ![](images/networks/squash-2.png)
 
 ***
-***
-# A Tale of Two Histories
-
----
-
-## Two main schools of thought on commit history
-
----
-
-## School 0:
-### "It's a record of what actually happened"
-
->It’s a historical document, valuable in its own right, and shouldn’t be tampered with. From this angle, changing the commit history is almost blasphemous; you’re lying about what actually transpired. So what if there was a messy series of merge commits? That’s how it happened, and the repository should preserve that for posterity.
-
-##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
----
-# Who could forget such classics as...
----
-![](images/commits/record-1.png)
----
-![](images/commits/record-2.png)
----
-![](images/commits/record-3.png)
----
-# or my personal favorite...
----
-![](images/commits/record-4.png)
----
-Some of these are, of course, shown in jest and the commit messages could be improved.
-
-<p class='fragment'>
-This really <strong>is</strong> a record of exactly what happened.
-</p>
-
-<p class='fragment'>
-However, the historical record can be difficult to traverse.
-</p>
----
-## School 1:
-### "It's the story of how your project was made"
-
->You wouldn’t publish the first draft of a book, and the manual for how to maintain your software deserves careful editing. This is the camp that uses tools like rebase and filter-branch to tell the story in the way that’s best for future readers.
-
-##### source: [git book](https://git-scm.com/book/en/v2/Git-Branching-Rebasing)
----
-# Which gives you commits like these...
----
-![](images/commits/story-1.png)
----
-![](images/commits/story-2.png)
----
-# School 0
-# vs.
-# School 1
----
-## School 0
-### "It's a record of what actually happened"
-
-### Pros
-* Easy
-* Low-Risk / Barrier to Entry
-* History records what "really happened"
-
-### Cons
-* Lots of micro-commits, with varying levels of meaning
-* More commits === more time traversing the logs
----
-## School 1
-### "It's the story of how your project was made"
-
-### Pros
-* Clean, meaningful history
-* No "WIP", "Initial", etc. commits
-
-### Cons
-* Must be careful with rewriting history
-* Can create very "macro" commits containing a lot of code
-
-***
-# :raising_hand:
-## on the two schools ?
 ***
 ## Patterns at Ibotta
 
