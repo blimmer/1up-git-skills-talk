@@ -202,6 +202,8 @@ Take the few extra minutes to add some thought about what the code does. It may 
 # :raising_hand:
 ## on squash and merge ?
 ***
+# Recap on GitHub Merge Options
+---
 ## Create a Merge Commit
 ![](images/networks/merge-2.png)
 ---
