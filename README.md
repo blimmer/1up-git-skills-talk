@@ -1,7 +1,5 @@
 # 1-Up Your Git Skills
 
-A change up top.
-
 A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
 This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
 
@@ -18,5 +16,3 @@ If you want to run this project locally:
 3. Run `bundle exec reveal-ck generate`
 4. Run `bundle exec reveal-ck serve`
 5. Visit http://localhost:10000
-
-A change at the bottom.
