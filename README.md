@@ -5,6 +5,10 @@ This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-c
 
 You can view the slides [here](https://blimmer.github.io/1up-git-skills-talk).
 
+## Original Version
+This is a revamped version of a talk I gave in 2015. If you want to view that
+talk, please check out the [v1 branch](https://github.com/blimmer/1up-git-skills-talk/tree/v1).
+
 ## Contributing
 Found a problem in the slides? Please open a PR or issue!
 
