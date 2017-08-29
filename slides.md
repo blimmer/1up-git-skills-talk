@@ -250,7 +250,7 @@ The individual commits are still also viewable within the PR, and the branch can
 
 Remember our squash and merge from before?
 
-![](images/networks/merge-1.png)
+![](images/networks/example-network.png)
 
 ---
 
