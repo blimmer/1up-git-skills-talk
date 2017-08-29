@@ -3,26 +3,29 @@
 Ben Limmer  
 @blimmer
 
-December 2, 2015
----
-## Plumbing vs. Porcelain
-
-We'll stick mostly to using porcelain commands, but reading the
-[plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)
-is highly recommended.
+August 28, 2017
 ---
 ## Desired Takeaways
 
-- the two schools of thought on repo history
-- how to rebase
-- how we "do Git" on the web team
-- my suggested workflow
-- a new trick
+- understand the two main schools of thought on commit history
+- understand the three github PR merge options
+- understand common gotchas with rewriting history
+- master a new `git` command or two
+
+---
+## Plumbing vs. Porcelain
+
+We'll stick mostly to using porcelain commands, but reading the [plumbing docs](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) is highly recommended once you're familiar with these concepts.
+
 ***
 # A Tale of Two Histories
+
 ---
+
 ## Two main schools of thought on commit history
+
 ---
+
 ## School 0:
 ### "It's a record of what actually happened"
 
@@ -42,8 +45,7 @@ is highly recommended.
 ---
 ![](images/commits/record-4.png)
 ---
-Some of these are, of course, shown in jest and the commit messages could be
-improved.
+Some of these are, of course, shown in jest and the commit messages could be improved.
 
 <p class='fragment'>
 This really <strong>is</strong> a record of exactly what happened.
@@ -80,7 +82,7 @@ However, the historical record can be difficult to traverse.
 
 ### Cons
 * Lots of micro-commits, with varying levels of meaning
-* More commits === more time spelunking the logs
+* More commits === more time traversing the logs
 ---
 ## School 1
 ### "It's the story of how your project was made"
@@ -90,408 +92,374 @@ However, the historical record can be difficult to traverse.
 * No "WIP", "Initial", etc. commits
 
 ### Cons
-* More time-consuming
 * Must be careful with rewriting history
 * Can create very "macro" commits containing a lot of code
+
 ***
-# :flushed:
+# :raising_hand:
 ## on the two schools ?
 ***
-I, personally, believe in School 1.
-<p class='fragment'>
-But we need to understand what it means to "rebase" before we go any further.
-</p>
----
-## Merge vs. Rebase
+
+### The Three Github PR Options
+
+![](images/github/github_merge_options.png)
+
+##### source: [github help docs](https://help.github.com/assets/images/help/pull_requests/select-squash-and-merge-from-drop-down-menu.png)
+
+***
+***
+
+## Create a Merge Commit
+
+![](images/github/pr_option-merge.png)
+
 ---
 ## Merge
 A merge occurs when you want to integrate two branches together.
+![](images/networks/example-network.png)
+---
+When you merge `feature/add-behavior` into `develop`, it performs a three-way merge between the two latest branch snapshots (C4 and C5) and the most recent common ancestor of the two (C1), creating a new snapshot (and commit - C6).
 ![](images/networks/merge-1.png)
 ---
-When you merge `experiment` into `master`, it performs a three-way merge between
-the two latest branch snapshots (C3 and C4) and the most recent common ancestor
-of the two (C2), creating a new snapshot (and commit).
+This is fine, but we've produced another commit which might not have value.
+
+<p class='fragment'>
+Additionally, we have feature branch commits intermixed within the history of <code>develop</code>.
+</p>
+---
 ![](images/networks/merge-2.png)
+***
+# :raising_hand:
+## on merging ?
+***
+## Rebase and Merge
+![](images/github/pr_option-rebase-merge.png)
 ---
-This is fine, but we've produced another commit which might not be extremely
-valuable.
+A rebase takes one or more commits and reapplies it on top of new commits on the destination branch.
+![](images/networks/example-network.png)
 ---
-## Rebase
-A rebase takes one or more patches and reapplies it on top of new commits on
-the destination branch.
-![](images/networks/merge-1.png)
----
-When you rebase `experiment` off of `master`, it works by going to the common
-ancestor of the two branches (C2), generating diffs for each subsequent commit
-(C4), and applies the commit to the new commit on `master`.
+When you rebase `feature/add-behavior` off of `develop`, it works by going to the common ancestor of the two branches (C1), generating diffs for each subsequent commit (C2/C3/C5), and replays each commit.
 ![](images/networks/rebase-1.png)
 ---
-Now we can fast-forward merge to `master`, giving us
+Then, the merge can occur as a "fast-forward" merge, creating no merge commit.
 ![](images/networks/rebase-2.png)
 ---
-The result of the merge and the rebase are functionally the same, except the
-rebase history looks more linear.
+The result of the merge and the rebase are functionally the same, except the rebase history looks more linear.
 ---
+## Create a Merge Commit
 ![](images/networks/merge-2.png)
+---
+## Rebase and Merge
 ![](images/networks/rebase-2.png)
 ***
-# :flushed:
-## on basic rebasing ?
+# :raising_hand:
+## on rebase and merge ?
 ***
-But how does this get rid of "meaningless" commits?
-<p class='fragment'>
-It doesn't directly, but an interactive rebase does.
-</p>
----
-## Interactive Rebasing
-Allows you to "edit" each commit's contents or message as you re-apply each commit
-on top of the ancestor branch.
----
-While working on a feature branch, you likely have a commit history like this
 
-![](images/commits/record-5.png)
----
-However, **very** little actually changed for this feature.
+## Squash and Merge
+![](images/github/pr_option-squash-merge.png)
 
-![](images/commits/record-6.png)
 ---
-Imagine bisecting this and finding that this was the offending commit
 
-![](images/commits/record-7.png)
----
-# :rage:
----
-In the example above, there were two problems (IMO):
+A "squash" takes one or more commits, creates a single commit from those commits and applies it to the destination branch.
 
-1. There are a lot of commits retaining history that isn't important to maintain
-(e.g. fixing specs and making PR notes)
-2. The dev originally branched off of develop, but then merged develop back in.
-In total, that means that for this work, there will be two merge commits that
-don't mean a lot.
----
-How do we fix it?
----
-## Interactive Rebase
-Before merging the feature into develop, the dev could have done an interactive
-rebase in order to "squash" commits.
----
-```nohighlight
-git checkout develop
-git pull origin develop
-git checkout feature/x
-git rebase -i develop
-```
----
-This brings you to a screen where you can decide what to do with your commits
+![](images/networks/example-network.png)
 
-![](images/rebase-tutorial/rebase-1.png)
 ---
-## Squash (allthethings)
-In this example, I want to squash everything down to 1 commit because that's
-the only valuable history on this branch.
+When you squash `feature/add-behavior`, it conceptually rebases the branch as before.
 
-![](images/rebase-tutorial/rebase-2.png)
----
-## Reword Commit `r`
-Since I said I wanted to reword the first commit, I'm brought to this screen
-
-![](images/rebase-tutorial/rebase-3.png)
----
-## Complete Rebase
-Now that I've reworded, I'm shown a final summary of happened
-
-![](images/rebase-tutorial/rebase-4.png)
----
-## :tada:
-We're left with one meaningful commit message!
-
-![](images/rebase-tutorial/rebase-5.png)
-***
-# :flushed:
-## on interactive rebasing ?
-***
-# :ambulance:
-When re-writing history (e.g. rebasing) can go wrong
----
-## Example
-Imagine I'm working on a feature branch and it has 3 commits on origin (meaning
-I've pushed the branch to GitHub).
-
-Commit Hash | Message | Author
-------------|---------|--------
-a           | Initial Implementation | blimmer
-b           | Test Fixes | blimmer
-c           | PR Updates | blimmer
----
-I decide to rebase those commits into one commit. However, the designer on my
-team has checked out my feature branch, added a commit, and pushed it to origin,
-so the history on origin looks like this.
-
-Commit Hash | Message | Author
-------------|---------|--------
-a           | Initial Implementation | blimmer
-b           | Test Fixes | blimmer
-c           | PR Updates | blimmer
-d           | Fonts & Colors | krsmcd
----
-However, if I don't pull from origin first, do an interactive rebase to squash
-my three commits into one, and force-push to origin, origin will now have this
-history.
-
-Commit Hash | Message | Author
-------------|---------|--------
-f           | My Squashed Commit | blimmer
----
-Doh! I just lost the designer's commit. Let's hope he still has that commit
-locally so we can do some git-fu to get it back.
-
-:facepunch:
----
-There are two things to take from this accident.
-
-1. If you know others are (or even might be) working on your branch, don't
-rewrite history until you're ready to merge.
-2. **always** use `--force-with-lease` to ensure your local remote ref is the
-same as the origin remote ref (e.g. no one else has pushed commits to your branch)
----
-If I would have used
-
-```nohighlight
-git push --force-with-lease
-```
-
-I would have seen this message
-
-```nohighlight
-git push --force-with-lease
-To /tmp/repo
-[rejected]  feature/x -> feature/x (stale info)
-error: failed to push some refs to '/tmp/repo'
-```
-
-That would have told me - oh crap, someone else was working on this branch!
----
-Ok, it sounds scary but it's really not that bad. 9/10 times I'm working on my
-own on a branch. If I'm not, I just wait to do any rebasing until I'm ready to
-merge to develop.
-***
-# :flushed:
-## on rebasing safety ?
-***
-# How we "do Git" on the web team
----
-## Git Flow ... kinda
+![](images/networks/rebase-1.png)
 
 <p class='fragment'>
-Kinda, because most of us don't use the git flow plugin.
-</p>
-<p class='fragment'>
-But, from a high level, we have 3-4 kinds of branches.
+But then, it "squashes" the commits (C6/C7/C8) into one commit.
 </p>
 ---
-## master
-### a.k.a. the "release branch"
+All the commits from the branch are now contained in one commit (C9).
+![](images/networks/squash-1.png)
 ---
-## master rules
-- **Never** rebased
-- Tests always pass
-- Tagged with a [GitHub Release](https://help.github.com/articles/creating-releases/) when deploying to prod
-- Only branched directly for hotfixes
----
-## master benefits
-- Allows develop to be in a **semi**-releasable state, with ability to hotfix emergencies
-- Tags allow simple history ([changelog generator](https://github.com/skywinder/github-changelog-generator))
----
-## develop
-### a.k.a. the "next release" branch
----
-## develop rules
-- **Never** rebased
-- Semi-stable
-- Tests should pass
-- Features/Epics are merged here
----
-## develop benefits
-- Allows us to build up the next release without dealing with merge conflicts right before deploy
-- Easily aggregate changes before a deploy
----
-## feature branches
-### a.k.a. a "story" branch
----
-## feature branch rules
-- Rebased at will*
-- One testable/deployable piece of work
-- PR-ed against develop
----
-## feature branch benefits
-- Comfortably rebase when you want
-- WIP commits OK (will be squashed before merging)
----
-## epic branches
-### a.k.a. a "collection of story branches" that might take more than a sprint to get deployable
----
-## epic branch rules
-- Not rebased (until ready for merge to develop)
-- Merged into occasionally from develop (if develop is active)
-- Related feature branches are branched from the epic branch
-- Simply "another develop", but shorter lived
----
-## epic branch benefits
-- Maintains contract of develop being "semi-stable"
-- Avoids huge PR reviews at the end of the epic
-- Allow story acceptance as you go (against staging)
----
-# Show & Tell
-* [releases](https://github.com/Ibotta/Ibotta-Web/releases)
-* [changelog](https://github.com/Ibotta/Ibotta-Web/blob/develop/CHANGELOG.md)
-* [PRs](https://github.com/Ibotta/Ibotta-Web/pulls)
-* [deploy-info](https://ibotta.com/deploy-info) trick
-***
-# :flushed:
-## on how we "do git" ?
-***
-Let me show you my process.
----
-## blimmer's process
-1. Branch
-2. Work normally
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 1. Branch
-
-I always start off the same way - by creating a branch (either from epic or develop).
-
-```nohighlight
-git checkout -b feature/my-new-feature
-```
----
-## blimmer's process
-1. ~~Branch~~ √
-2. Work normally
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 2. Work Normally
-
-WIP commits and all! This branch is yours and you should track work as it makes
-sense. Make as many commits as you want, even if they don't have meaning yet.
-
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. Squash
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 3. Squash
+Then, the merge can occur as a "fast-forward" merge, creating no merge commit.
+![](images/networks/squash-2.png)
 
 <p class='fragment'>
-Squash all meaningless commits. This doesn't mean "every PR must have 1 commit".
+Just like a rebase and merge.
 </p>
+
+---
+
+You should also update the commit messages as you squash and merge.
+
+By default it is just a "starred" list of all your commit messages:
+
+![](images/github/squash-interface-1.png)
+
+---
+
+Take the few extra minutes to add some thought about what the code does. It may prove helpful to a future dev who finds your code.
+
+![](images/github/squash-interface-2.png)
+
+***
+# :raising_hand:
+## on squash and merge ?
+***
+# Recap on GitHub Merge Options
+---
+## Create a Merge Commit
+![](images/networks/merge-2.png)
+---
+## Rebase and Merge
+![](images/networks/rebase-2.png)
+---
+## Squash and Merge
+![](images/networks/squash-2.png)
+
+***
+***
+## Patterns at Ibotta
+
+We enforce "squash and merge" on most repositories.
+
+---
+
+It produces history like this:
+
+![](images/commits/repo-history-1.png)
+
+---
+
+![](images/commits/repo-history-2.png)
+
+---
+
+![](images/commits/pr-page.png)
+
+---
+
+A developer that finds this commit years down the road would have lots of context and information on why we changed the code in this way.
+
+---
+
+The individual commits are still also viewable within the PR, and the branch can be restored in its original state, if needed.
+
+![](images/commits/pr-page-commits.png)
+
+***
+***
+
+# Gotchas with Rewriting History
+
+---
+
+Remember our squash and merge from before?
+
+![](images/networks/example-network.png)
+
+---
+
+![](images/networks/squash-1.png)
+
+---
+
+![](images/networks/squash-2.png)
+
+---
+
+What would happen if someone branched off of our branch before we squashed and merged?
 
 <p class='fragment'>
-It simply means that if the diff stored in history by a commit isn't useful on
-its own, squash it into some other commit that carries meaning. Remember you can
-re-order commits in a rebase!
+Their branch would still know about commits C2/C3/C5, but those commits don't exist anymore...
 </p>
----
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. Rebase
-5. Merge
-6. Repeat :beers:
----
-## 4. Rebase
-
-Rebase your branch off of the ancestor branch (usually develop), so only
-a fast-forward merge will occur.
 
 ---
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. ~~Rebase~~ √
-5. Merge
-6. Repeat :beers:
----
-## 5. Merge
-Merge your freshly rebased code into develop or the epic branch.
 
-Via GitHub or the command line.
+Charlie's branch has commits C2/C3/C5 from when he originally branched from Bob's branch.
+
+![](images/networks/squash-gotcha-1.png)
+
+---
+
+When Bob merges, he creates C9 and "rewrites history" so that C2/C3/C5 don't end up on develop. But Charlie's branch still knows about Bob's original commits.
+
+![](images/networks/squash-gotcha-2.png)
+
+---
+
+To fix this, we need to help `git` understand what's going on.
 
 ```nohighlight
-git checkout develop
-git merge feature/my-new-feature
+git rebase --onto develop feature/add-behavior feature/add-more-behavior
+```
+
+or replay the last two commits only (ours):
+
+```nohighlight
+git rebase --onto develop HEAD~2
 ```
 
 ---
-## blimmer's process
-1. ~~Branch~~ √
-2. ~~Work normally~~ √
-3. ~~Squash~~ √
-4. ~~Rebase~~ √
-5. ~~Merge~~ √
-6. Repeat :beers:
+
+This will result in a nice clean graph:
+
+![](images/networks/squash-gotcha-3.png)
+
 ---
-# :tada:
-***
-# :flushed:
-## on the method I use ?
----
-# other git tricks
-***
-## amending the last commit
+
+However, when you try to push, git might tell you that you can't...
+
 ```nohighlight
-git commit --amend
+> git push origin feature/add-more-behavior
+To github.com:blimmer/example-repo.git
+ ! [rejected]        add-more-behavior -> add-more-behavior (non-fast-forward)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
+
 ---
-`git commit --amend`
 
-> It's the little brother of an interactive rebase
+git is warning us that history has changed in a way that it doesn't understand. it's suggesting a `git pull`, but that's not what we want to do (that will re-integrate C2/C3/C5 from origin!)
 
-#### @onyxraven
 ---
-`git commit --amend`
 
-Takes any staged changes and rolls it into the previous commit. Great for
-"PR Notes" commits.
+we need to tell git that we know what we're doing and that we just rebased.
+
+```nohighlight
+> git push --force-with-lease origin feature/add-more-behavior
+```
 
 <p class='fragment'>
-This <strong>still rewrites history</strong>.
+<code>origin</code> will now happily accept our newly rebased version of our branch.
 </p>
 ---
-Commit Hash | Message | Author
-------------|---------|--------
-f           | My Squashed Commit | blimmer
-... make some changes ...
+
+:confused:
+`--force-with-lease` ???
+
+---
+
+## `--force-with-lease`
+
+Checks to make sure that no-one pushed an additional commit to your branch before you rebased.
+
+---
+
+TLDR; use `--force-with-lease` and if you get a warning that looks like this:
+
+```nohighlight
+> git push --force-with-lease origin feature/add-more-behavior
+[rejected]  add-more-behavior -> add-more-behavior (stale info)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+```
+
+Check out who else is working on your branch.
+
+---
+
+Also, an alias is really handy here. Add this to `~/.gitconfig`.
+
+```nohighlight
+[alias]
+        pushf = push --force-with-lease
+```
+
+Then you can do this instead
+
+```nohighlight
+git pushf origin feature/add-more-behavior
+```
+***
+
+:raising_hand:
+on rewriting history gotchas?
+
+***
+
+# PSA
+## you (almost) never need to merge the same branch into itself
+
+---
+
+commit history on the develop branch
+
+![](images/commits/merge-branch-into-itself-1.png)
+
+---
+
+:confused:
+what happened?
+
+---
+
+![](images/commits/merge-branch-into-itself-2.png)
+
+---
+
+![](images/commits/merge-branch-into-itself-3.png)
+
+---
+
+![](images/commits/merge-branch-into-itself-4.png)
+
 ---
 
 ```nohighlight
-git add .
-git commit --amend
+> git push origin develop
+To github.com:blimmer/example-repo.git
+ ! [rejected]        develop -> develop (non-fast-forward)
+error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
-Commit Hash | Message | Author
-------------|---------|--------
-e           | My Squashed Commit | blimmer
+---
 
-***
-***
-## adding by patch
+we **never** want to force push develop like with our other branches.
+
+<p class='fragment'>
+we want to integrate the missed commit and replay our commit.
+</p>
+
+---
 
 ```nohighlight
-git add -p
+git pull origin develop --rebase
 ```
+
+<p class='fragment'>
+this will replay our commit after the missed upstream commit
+</p>
+
+---
+
+![](images/commits/merge-branch-into-itself-5.png)
+
+---
+
+now git will happily accept the branch without any force push because the histories match upstream and locally.
+
+```nohighlight
+git push origin develop
+```
+
+***
+
+:raising_hand:
+on why you *almost* never need to merge your own branch into itself?
+
+***
+
+# Other git tricks
+- `git add -p`
+- `git revert`
+- `git bisect`
+
+***
+***
+# `git add -p`
 ---
 
 another tool to use instead of
@@ -503,55 +471,60 @@ git add .
 
 steps through each file patch by patch, staging as you go.
 
-<p class='fragment'>
-Imagine a change at the top and bottom of a file, but they're not related to the
-same change.
-</p>
-
 ---
 
-```nohighlight
-blimmer:~/code/talks/git (master ✗)
-› git add -p
-```
-
----
+Imagine a change at the top and bottom of a file, but they're not related to the same change.
 
 ```nohighlight
-› git add -p
 diff --git a/README.md b/README.md
-index 1a9c834..d25f0d6 100644
+index 8cb1ada..81f96b0 100644
 --- a/README.md
 +++ b/README.md
 @@ -1,5 +1,7 @@
  # 1-Up Your Git Skills
 
-+A change at the top
++A change up top.
 +
- A talk given at the Ibotta Engineering Lunch and Learn series on December 2, 2015.
+ A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
  This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
 
-Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]?
-```
-
----
-
-```nohighlight
 @@ -16,3 +18,5 @@ If you want to run this project locally:
- 3. Run `reveal-ck generate`
- 4. Run `reveal-ck serve`
+ 3. Run `bundle exec reveal-ck generate`
+ 4. Run `bundle exec reveal-ck serve`
  5. Visit http://localhost:10000
 +
-+A change at the bottom
++A change at the bottom.
 ```
 
 ---
 
 ```nohighlight
-blimmer:~/code/talks/git (master ✗)
-› st
-On branch master
-Your branch is up-to-date with 'origin/master'.
+diff --git a/README.md b/README.md
+index 8cb1ada..81f96b0 100644
+--- a/README.md
++++ b/README.md
+@@ -1,5 +1,7 @@
+# 1-Up Your Git Skills
+
++A change up top.
++
+A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
+This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
+
+Stage this hunk [y,n,q,a,d,/,j,J,g,e,?]? n
+@@ -16,3 +18,5 @@ If you want to run this project locally:
+3. Run `bundle exec reveal-ck generate`
+4. Run `bundle exec reveal-ck serve`
+5. Visit http://localhost:10000
++
++A change at the bottom.
+Stage this hunk [y,n,q,a,d,/,K,g,e,?]? y
+```
+
+---
+
+```nohighlight
+On branch update-talk
 Changes to be committed:
   (use "git reset HEAD <file>..." to unstage)
 
@@ -565,22 +538,253 @@ Changes not staged for commit:
 ```
 ***
 ***
-# extra credit :100:
-<p class='fragment'>
-Demo time
-</p>
----
-ok, that took some time...
 
-<p class='fragment'>
-but what history would you rather view if you need to go back through it?
-</p>
+# `git revert`
+
 ---
-## original
-![](images/rebase-tutorial/rebase-6.png)
+
+with squash and merge this is easy!
+
+![](images/commits/revert-1.png)
+
 ---
-### rebase
-![](images/rebase-tutorial/rebase-7.png)
+
+```nohighlight
+git revert 1e736b8
+git push origin develop
+```
+
+---
+
+![](images/commits/revert-2.png)
+
+---
+
+then, checkout a new branch, revert the revert and fix it up.
+
+![](images/commits/revert-2.png)
+
+```nohighlight
+git checkout -b feature/revert-revert-filtering-rps
+git revert 43baa57
+```
+
+***
+***
+
+# `git bisect`
+
+---
+
+## `git bisect`
+
+> use binary search to find the commit that introduced a bug
+
+---
+
+![](images/bisect/binary-search.gif)
+
+---
+
+Steps:
+1. Tell `git` that we want to bisect.
+1. Mark a `good` commit (where the problem doesn't exist).
+1. Mark a `bad` commit (where the problem does exist).
+1. Find where the bug was introduced.
+
+---
+
+## `git bisect` example
+
+##### [source](https://www.metaltoad.com/blog/beginners-guide-git-bisect-process-elimination)
+
+---
+
+```nohighlight
+> cat test.txt
+row
+row
+row
+your
+car
+gently
+down
+the
+stream
+```
+
+---
+
+# :expressionless:
+
+---
+
+```nohighlight
+> git log
+commit d6c3e9b9cc226db47b96c926e35c3ca8733a618b (HEAD -> master)
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'stream'
+
+commit 06ecaeb65e34c2a1999e0df388d6740d827700cd
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'the'
+
+commit 8483a605ca3a0ee2114217d85bfd350dbe32c6c4
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'down'
+
+commit a01f608a342d01f6e0f190575e505119de23b64d
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Changing the word 'boat' to 'car'
+
+commit 025c6896d02fbad81ad7425542ec58e762a84d79
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'gently'
+
+commit cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'boat'
+
+commit 155b346e7765aa052ac93667090f7bbb59f8ce52
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'your'
+
+commit 4b240a2c69b96b3e13dcd86ad3dd147111cbc20c
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding third row
+
+commit 4460700b737a791b6d5f83ec1a58fc8442cb397a
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding second row
+
+commit e5d679e901d5de14dff803c7d51fb39fc569d0f4
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:30 2017 -0600
+
+    Adding first row
+```
+
+---
+
+# :expressionless:
+
+---
+
+## `git bisect` to the rescue!
+
+first, tell `git` that we want to bisect.
+
+```nohighlight
+git bisect start
+```
+
+---
+
+mark the commit where we knew things were OK.
+
+```nohighlight
+commit cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'boat'
+```
+
+```nohighlight
+git bisect good cdc7bf7a1d671343e27fba67a94ce462b8ee009b
+```
+---
+
+and mark where we know it's bad.
+
+```nohighlight
+commit d6c3e9b9cc226db47b96c926e35c3ca8733a618b (HEAD -> master)
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Adding the word 'stream'
+```
+
+```nohighlight
+git bisect bad d6c3e9b9cc226db47b96c926e35c3ca8733a618b
+```
+
+---
+
+now step through and check it out at each step in the binary search.
+
+```nohighlight
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[a01f608a342d01f6e0f190575e505119de23b64d] Changing the word 'boat' to 'car'
+```
+
+```nohighlight
+> cat test.txt
+row
+row
+row
+your
+car
+gently
+```
+
+```nohighlight
+git bisect bad
+```
+---
+
+```nohighlight
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[025c6896d02fbad81ad7425542ec58e762a84d79] Adding the word 'gently'
+```
+
+```nohighlight
+> cat test.txt
+row
+row
+row
+your
+boat
+gently
+```
+
+```nohighlight
+git bisect good
+```
+
+---
+
+```nohighlight
+a01f608a342d01f6e0f190575e505119de23b64d is the first bad commit
+commit a01f608a342d01f6e0f190575e505119de23b64d
+Author: Ben Limmer <ben@benlimmer.com>
+Date:   Mon Aug 28 18:00:31 2017 -0600
+
+    Changing the word 'boat' to 'car'
+
+:100644 100644 9eb95934daee636eba60587a2aef592cd5edacc1 34802b80cf929a42035c7b02dae715c864e9caa8 M	test.txt
+:000000 100644 0000000000000000000000000000000000000000 9eb95934daee636eba60587a2aef592cd5edacc1 A	test.txt-e
+```
+
+***
 ***
 # :question:
 ## on anything else
@@ -592,7 +796,8 @@ but what history would you rather view if you need to go back through it?
 ```nohighlight
 git help <command-name>
 ```
----
+
+***
 ## Thanks!
 :bow:
 
@@ -601,14 +806,9 @@ Ben Limmer
 hello@benlimmer.com  
 ---
 ## Legal Stuff
-I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2),
-which is licensed under the
-[Creative Commons Attribution Non Commercial Share Alike 3.0 license](http://creativecommons.org/licenses/by-nc-sa/3.0/), thus this presentation
-is also subject to the same license.
+I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2), which is licensed under the
+[Creative Commons Attribution Non Commercial Share Alike 3.0 license](http://creativecommons.org/licenses/by-nc-sa/3.0/), thus this presentation is also subject to the same license.
 
-Don't freak out - that just means that you need to attribute it if you use it,
-indicate if changes were made and distribute any remix of this work under the
-same license.
+You need to attribute it if you use it, indicate if changes were made and distribute any remix of this work under the same license.
 
-I reused some of the awesome diagrams and have made minor changes to the
-description of how rebases are applied.
+I cribbed the "two schools of thought" from that book and added my opinions.
