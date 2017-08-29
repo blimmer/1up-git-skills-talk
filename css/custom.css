@@ -1,3 +1,7 @@
+.reveal {
+  font-size: 30px;
+}
+
 .reveal blockquote {
   text-align: left;
   padding: 10px 20px;
@@ -14,4 +18,8 @@
 
 .reveal strong {
   text-decoration: underline;
+}
+
+code.language-nohighlight {
+  background-color: rgb(63, 63, 63);
 }
