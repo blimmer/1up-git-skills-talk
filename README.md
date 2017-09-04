@@ -7,8 +7,7 @@ This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-c
 A video recording of this talk is available [on YouTube](https://youtu.be/yipRNHjNxT4).
 
 ## Slides
-You can view the slides [here](https://blimmer.github.io/1up-git-skills-talk).
-
+You can view the slides [here](https://blimmer.github.io/1up-git-skills-talk), or on [SlideShare](https://www.slideshare.net/BenLimmer/understanding-github-pr-merge-options-1uping-your-git-skills-part-2).
 ## Original Version
 This is a revamped version of a talk I gave in 2015. If you want to view that
 talk, please check out the [v1 branch](https://github.com/blimmer/1up-git-skills-talk/tree/v1).
