@@ -3,6 +3,10 @@
 A talk given at the Ibotta Engineering Lunch and Learn series on August 29, 2017.
 This presentation was created with [reveal-ck](https://github.com/jedcn/reveal-ck).
 
+## Video
+A video recording of this talk is available [on YouTube](https://youtu.be/yipRNHjNxT4).
+
+## Slides
 You can view the slides [here](https://blimmer.github.io/1up-git-skills-talk).
 
 ## Original Version
