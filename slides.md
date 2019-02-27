@@ -243,6 +243,12 @@ The individual commits are still also viewable within the PR, and the branch can
 
 ![](images/commits/pr-page-commits.png)
 
+---
+
+Your team can enforce their preferred merge methods on a per-repo basis.
+
+![](images/github/merge-button-options.png)
+
 ***
 ***
 
@@ -444,6 +450,12 @@ now git will happily accept the branch without any force push because the histor
 ```nohighlight
 git push origin develop
 ```
+
+---
+
+I highly recommend protecting at least your default branch in GitHub.
+
+![](images/github/branch-protection.png)
 
 ***
 
