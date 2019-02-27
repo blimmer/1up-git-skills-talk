@@ -7,7 +7,7 @@
 
 <meta name="description" content="A description of the Git practices the web-tech team uses at Ibotta. Also, discussion about (interactive) rebasing and my personal working strategy for Git.">
 <meta name="author" content="Ben Limmer">
-<meta name="generator" content="reveal-ck 3.8.0">
+<meta name="generator" content="reveal-ck 3.9.2">
 
 
 
@@ -48,12 +48,12 @@
     <section>
 
 <h1>
-<img class="emoji" alt=":raised_hands:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64c.png"> your git skills</h1>
+<img class="emoji" alt=":raised_hands:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64c.png"> your git skills</h1>
 
-<p>Ben Limmer  <br>
+<p>Ben Limmer<br>
 <a href="https://github.com/blimmer" class="user-mention">@blimmer</a></p>
 
-<p>August 28, 2017</p>
+<p>March 5, 2019</p>
 
 </section>
 <section>
@@ -217,7 +217,7 @@ However, the historical record can be difficult to traverse.
 </section>
 <section>
 
-<h1><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"></h1>
+<h1><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"></h1>
 <h2>on the two schools ?</h2>
 
 </section>
@@ -272,7 +272,7 @@ Additionally, we have feature branch commits intermixed within the history of <c
 </section>
 <section>
 
-<h1><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"></h1>
+<h1><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"></h1>
 <h2>on merging ?</h2>
 
 </section>
@@ -321,7 +321,7 @@ Additionally, we have feature branch commits intermixed within the history of <c
 </section>
 <section>
 
-<h1><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"></h1>
+<h1><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"></h1>
 <h2>on rebase and merge ?</h2>
 
 </section>
@@ -385,7 +385,7 @@ Just like a rebase and merge.
 </section>
 <section>
 
-<h1><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"></h1>
+<h1><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"></h1>
 <h2>on squash and merge ?</h2>
 
 </section>
@@ -420,7 +420,7 @@ Just like a rebase and merge.
 
 <h2>Patterns at Ibotta</h2>
 
-<p>We enforce “squash and merge” on most repositories.</p>
+<p>We enforce “squash and merge” on many high-traffic repositories.</p>
 
 </section>
 <section>
@@ -450,6 +450,13 @@ Just like a rebase and merge.
 <p>The individual commits are still also viewable within the PR, and the branch can be restored in its original state, if needed.</p>
 
 <p><img src="images/commits/pr-page-commits.png" alt=""></p>
+
+</section>
+<section>
+
+<p>Your team can enforce their preferred merge methods on a per-repo basis.</p>
+
+<p><img src="images/github/merge-button-options.png" alt=""></p>
 
 </section>
 </section>
@@ -554,7 +561,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 </section>
 <section>
 
-<p><img class="emoji" alt=":confused:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png"><br>
+<p><img class="emoji" alt=":confused:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f615.png"><br>
 <code>--force-with-lease</code> ???</p>
 
 </section>
@@ -594,7 +601,7 @@ error: failed to push some refs to 'git@github.com:blimmer/example-repo.git'
 </section>
 <section>
 
-<p><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"><br>
+<p><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"><br>
 on rewriting history gotchas?</p>
 
 </section>
@@ -614,7 +621,7 @@ on rewriting history gotchas?</p>
 </section>
 <section>
 
-<p><img class="emoji" alt=":confused:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png"><br>
+<p><img class="emoji" alt=":confused:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f615.png"><br>
 what happened?</p>
 
 </section>
@@ -678,10 +685,17 @@ this will replay our commit after the missed upstream commit
 </code></pre>
 
 </section>
+<section>
+
+<p>I highly recommend protecting at least your default branch in GitHub.</p>
+
+<p><img src="images/github/branch-protection.png" alt=""></p>
+
+</section>
 </section>
 <section>
 
-<p><img class="emoji" alt=":raising_hand:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f64b.png"><br>
+<p><img class="emoji" alt=":raising_hand:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png"><br>
 on why you <em>almost</em> never need to merge your own branch into itself?</p>
 
 </section>
@@ -879,7 +893,7 @@ stream
 </section>
 <section>
 
-<h1><img class="emoji" alt=":expressionless:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f611.png"></h1>
+<h1><img class="emoji" alt=":expressionless:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f611.png"></h1>
 
 </section>
 <section>
@@ -949,7 +963,7 @@ Date:   Mon Aug 28 18:00:30 2017 -0600
 </section>
 <section>
 
-<h1><img class="emoji" alt=":expressionless:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f611.png"></h1>
+<h1><img class="emoji" alt=":expressionless:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f611.png"></h1>
 
 </section>
 <section>
@@ -1052,7 +1066,7 @@ Date:   Mon Aug 28 18:00:31 2017 -0600
 <section>
 <section>
 
-<h1><img class="emoji" alt=":question:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2753.png"></h1>
+<h1><img class="emoji" alt=":question:" src="https://github.githubassets.com/images/icons/emoji/unicode/2753.png"></h1>
 <h2>on anything else</h2>
 
 </section>
@@ -1072,10 +1086,10 @@ Date:   Mon Aug 28 18:00:31 2017 -0600
 <section>
 
 <h2>Thanks!</h2>
-<p><img class="emoji" alt=":bow:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f647.png"></p>
+<p><img class="emoji" alt=":bow:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f647.png"></p>
 
-<p>Ben Limmer  <br>
-<a href="https://github.com/blimmer" class="user-mention">@blimmer</a>  <br>
+<p>Ben Limmer<br>
+<a href="https://github.com/blimmer" class="user-mention">@blimmer</a><br>
 hello@benlimmer.com</p>
 
 </section>
