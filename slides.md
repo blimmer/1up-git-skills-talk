@@ -1,9 +1,9 @@
 # :raised_hands: your git skills
 
-Ben Limmer  
+Ben Limmer
 @blimmer
 
-August 28, 2017
+March 5, 2019
 ---
 ## Desired Takeaways
 
@@ -217,7 +217,7 @@ Take the few extra minutes to add some thought about what the code does. It may 
 ***
 ## Patterns at Ibotta
 
-We enforce "squash and merge" on most repositories.
+We enforce "squash and merge" on many high-traffic repositories.
 
 ---
 
@@ -801,9 +801,9 @@ git help <command-name>
 ## Thanks!
 :bow:
 
-Ben Limmer  
-@blimmer  
-hello@benlimmer.com  
+Ben Limmer
+@blimmer
+hello@benlimmer.com
 ---
 ## Legal Stuff
 I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2), which is licensed under the
