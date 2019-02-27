@@ -1,9 +1,9 @@
 # :raised_hands: your git skills
 
-Ben Limmer  
+Ben Limmer
 @blimmer
 
-August 28, 2017
+March 5, 2019
 ---
 ## Desired Takeaways
 
@@ -217,7 +217,7 @@ Take the few extra minutes to add some thought about what the code does. It may 
 ***
 ## Patterns at Ibotta
 
-We enforce "squash and merge" on most repositories.
+We enforce "squash and merge" on many high-traffic repositories.
 
 ---
 
@@ -242,6 +242,12 @@ A developer that finds this commit years down the road would have lots of contex
 The individual commits are still also viewable within the PR, and the branch can be restored in its original state, if needed.
 
 ![](images/commits/pr-page-commits.png)
+
+---
+
+Your team can enforce their preferred merge methods on a per-repo basis.
+
+![](images/github/merge-button-options.png)
 
 ***
 ***
@@ -444,6 +450,12 @@ now git will happily accept the branch without any force push because the histor
 ```nohighlight
 git push origin develop
 ```
+
+---
+
+I highly recommend protecting at least your default branch in GitHub.
+
+![](images/github/branch-protection.png)
 
 ***
 
@@ -801,9 +813,9 @@ git help <command-name>
 ## Thanks!
 :bow:
 
-Ben Limmer  
-@blimmer  
-hello@benlimmer.com  
+Ben Limmer
+@blimmer
+hello@benlimmer.com
 ---
 ## Legal Stuff
 I was heavily influenced by the [Git Book](https://git-scm.com/book/en/v2), which is licensed under the
