@@ -3,7 +3,6 @@
 Ben Limmer
 @blimmer
 
-March 5, 2019
 ---
 ## Desired Takeaways
 
