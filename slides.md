@@ -214,9 +214,9 @@ Take the few extra minutes to add some thought about what the code does. It may 
 
 ***
 ***
-## Patterns at Ibotta
+## My General Preference
 
-We enforce "squash and merge" on many high-traffic repositories.
+I prefer to use "Squash and Merge" 90% of the time.
 
 ---
 
@@ -422,7 +422,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 ---
 
-we **never** want to force push develop like with our other branches.
+we **never** want to force push our default branch like with our other branches.
 
 <p class='fragment'>
 we want to integrate the missed commit and replay our commit.
